@@ -1,0 +1,46 @@
+.report-container {
+  background-color: white;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: var(--text-dark);
+}
+
+.report-container h1 {
+  color: var(--lsu-purple);
+  margin-bottom: 24px;
+  border-bottom: 3px solid var(--lsu-gold);
+  padding-bottom: 8px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+input, select, textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.submit-btn {
+  background-color: var(--lsu-gold);
+  color: var(--text-dark);
+  font-weight: bold;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: #e5be00;
+}
