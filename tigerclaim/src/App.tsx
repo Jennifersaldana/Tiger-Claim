@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import ReportLostItem from "./report-lost-item/report";
+import ReportFoundItem from "./report-lost-item/report";
 
 const App: React.FC = () => {
   return (
@@ -8,7 +8,7 @@ const App: React.FC = () => {
       <header className="lsu-header">
         <div className="header-content">
           <img
-            src="/tiger-claim-pic.jpeg"
+            src="/paw.png"
             alt="LSU Logo"
             className="lsu-logo"
           />
@@ -19,13 +19,13 @@ const App: React.FC = () => {
       <div className="main-layout">
         <nav className="sidebar">
           <ul>
-            <li className="active">Report Lost Item</li>
+            <li className="active">Report Found Item</li>
             <li>Search Lost Item</li>
           </ul>
         </nav>
 
         <main className="main-content">
-          <ReportLostItem />
+          <ReportFoundItem />
         </main>
       </div>
 

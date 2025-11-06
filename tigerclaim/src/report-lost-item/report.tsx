@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import "./report.css";
 
-const ReportLostItem: React.FC = () => {
+const ReportFoundItem: React.FC = () => {
   const [itemName, setItemName] = useState("");
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
   const [possession, setPossession] = useState("yes");
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState<File | null>(null);
-//   const [idNumber, setIdNumber] = useState("");
   const [currentLocation, setCurrentLocation] = useState("");
-    const [roomNumber, setRoomNumber] = useState("");
+  const [roomNumber, setRoomNumber] = useState("");
 
 
 
@@ -24,14 +23,14 @@ const ReportLostItem: React.FC = () => {
       roomNumber,
       currentLocation,
       description,
+      ReportFoundItem,
       photo,
-    //   idNumber
     });
   };
 
   return (
     <div className="report-container">
-      <h1>Report Lost Item</h1>
+      <h1>Report Found Item</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="itemName">Item Name:</label>
@@ -156,14 +155,6 @@ const ReportLostItem: React.FC = () => {
           />
         </div>
 
-        {/* <div className="form-group">
-          <label>Your 89 Number:</label>
-          <input
-            value={idNumber}
-            onChange={(e) => setIdNumber(e.target.value)}
-            placeholder="89xxxxxxx"
-          />
-        </div> */}
 
         <button type="submit" className="submit-btn">Submit</button>
       </form>
@@ -171,4 +162,4 @@ const ReportLostItem: React.FC = () => {
   );
 };
 
-export default ReportLostItem;
+export default ReportFoundItem;
