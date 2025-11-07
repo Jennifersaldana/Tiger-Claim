@@ -1,7 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./found.css";
-import { db } from "../config/firebase"; // Only Firestore now
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+
+interface FoundItem {
+  id: string;
+  itemName: string;
+  category: string;
+  location: string;
+  possession: string;
+  currentLocation: string;
+  roomNumber: string;
+  description: string;
+  photo?: string; // base64 image
+  createdAt: string;
+}
+
+const STORAGE_KEY = "foundItems.v1";
+
+// Simple UUID fallback
+function generateId() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
 
 const ReportFoundItem: React.FC = () => {
   const [itemName, setItemName] = useState("");
@@ -11,62 +33,85 @@ const ReportFoundItem: React.FC = () => {
   const [currentLocation, setCurrentLocation] = useState("");
   const [roomNumber, setRoomNumber] = useState("");
   const [description, setDescription] = useState("");
+  const [photo, setPhoto] = useState<string | undefined>("");
   const [message, setMessage] = useState("");
+  const [items, setItems] = useState<FoundItem[]>([]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Load from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) setItems(JSON.parse(saved));
+  }, []);
+
+  // Save to localStorage whenever list changes
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  }, [items]);
+
+  // Image upload handler
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => setPhoto(ev.target?.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      // Save document to Firestore (no Storage involved)
-      await addDoc(collection(db, "foundItems"), {
-        itemName,
-        category,
-        location,
-        possession,
-        currentLocation,
-        roomNumber,
-        description,
-        photoURL: "", // empty since we’re not uploading images
-        timestamp: serverTimestamp(),
-      });
+    const newItem: FoundItem = {
+      id: generateId(),
+      itemName,
+      category,
+      location,
+      possession,
+      currentLocation,
+      roomNumber,
+      description,
+      photo,
+      createdAt: new Date().toISOString(),
+    };
 
-      setMessage("Item successfully submitted!");
-      // Reset form
-      setItemName("");
-      setCategory("");
-      setLocation("");
-      setPossession("yes");
-      setCurrentLocation("");
-      setRoomNumber("");
-      setDescription("");
-    } catch (error) {
-      console.error("Error adding document:", error);
-      setMessage("Failed to submit item. Check console for details.");
-    }
+    setItems([newItem, ...items]);
+    setMessage("Item saved locally!");
+    // Reset form
+    setItemName("");
+    setCategory("");
+    setLocation("");
+    setPossession("yes");
+    setCurrentLocation("");
+    setRoomNumber("");
+    setDescription("");
+    setPhoto(undefined);
   };
 
   return (
     <div className="report-container">
       <h1>Report Found Item</h1>
       <form onSubmit={handleSubmit}>
+        {/* Item Name */}
         <div className="form-group">
           <label htmlFor="itemName">Item Name:</label>
           <input
             id="itemName"
             value={itemName}
             onChange={(e) => setItemName(e.target.value)}
+            required
           />
         </div>
 
+        {/* Category */}
         <div className="form-group">
           <label>Category:</label>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
+            required
           >
             <option value="">Select</option>
-            <option value="electronics">Electronics</option>
-            <option value="clothing">Clothing</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Clothing">Clothing</option>
             <option value="Bag">Bag</option>
             <option value="IDs & Cards">IDs & Cards</option>
             <option value="Books & Notebooks">Books & Notebooks</option>
@@ -78,11 +123,13 @@ const ReportFoundItem: React.FC = () => {
           </select>
         </div>
 
+        {/* Last Seen */}
         <div className="form-group">
           <label>Last Seen Location:</label>
           <select
             value={location}
             onChange={(e) => setLocation(e.target.value)}
+            required
           >
             <option value="">Select</option>
             <option value="Patrick F. Taylor Hall">Patrick F. Taylor Hall</option>
@@ -107,6 +154,7 @@ const ReportFoundItem: React.FC = () => {
           </select>
         </div>
 
+        {/* Possession */}
         <div className="form-group radio-group">
           <label>Are you in possession of the item?</label>
           <div>
@@ -131,13 +179,14 @@ const ReportFoundItem: React.FC = () => {
           </div>
         </div>
 
+        {/* Always show current location */}
         <div className="form-group">
           <label>Where is the item currently?</label>
           <select
             value={currentLocation}
             onChange={(e) => setCurrentLocation(e.target.value)}
           >
-            <option value="Select">Select</option>
+            <option value="">Select</option>
             <option value="Patrick F. Taylor Hall">Patrick F. Taylor Hall</option>
             <option value="Middleton Library">Middleton Library</option>
             <option value="Student Union">Student Union</option>
@@ -162,12 +211,32 @@ const ReportFoundItem: React.FC = () => {
           )}
         </div>
 
+        {/* Description */}
         <div className="form-group">
           <label>Item Description:</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            required
           />
+        </div>
+
+        {/* Upload Photo */}
+        <div className="form-group">
+          <label>Upload Photo:</label>
+          <input type="file" accept="image/*" onChange={handleImageUpload} />
+          {photo && (
+            <img
+              src={photo}
+              alt="preview"
+              style={{
+                marginTop: "10px",
+                width: "120px",
+                borderRadius: "8px",
+                border: "1px solid #ccc",
+              }}
+            />
+          )}
         </div>
 
         <button type="submit" className="submit-btn">
