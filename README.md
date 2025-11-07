@@ -24,5 +24,24 @@ git clone https://github.com/Jennifersaldana/Tiger-Claim.git
 
 Type in Terminal:
 ```Bash
+cd tigerclaim
+npm install
 npm start
+```
+
+Output: 
+```
+Starting the development server...
+Compiled successfully!
+
+You can now view tigerclaim in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://192.168.62.1:3000
+
+Note that the development build is not optimized.
+To create a production build, use npm run build.
+
+webpack compiled successfully
+No issues found.
 ```

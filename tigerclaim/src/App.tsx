@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
-import ReportFoundItem from "./report-lost-item/report";
+import ReportFoundItem from "./report-found-item/found";
+
 
 const App: React.FC = () => {
   return (

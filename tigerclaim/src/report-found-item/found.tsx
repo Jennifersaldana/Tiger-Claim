@@ -1,31 +1,48 @@
 import React, { useState } from "react";
-import "./report.css";
+import "./found.css";
+import { db } from "../config/firebase"; // Only Firestore now
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 const ReportFoundItem: React.FC = () => {
   const [itemName, setItemName] = useState("");
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
   const [possession, setPossession] = useState("yes");
-  const [description, setDescription] = useState("");
-  const [photo, setPhoto] = useState<File | null>(null);
   const [currentLocation, setCurrentLocation] = useState("");
   const [roomNumber, setRoomNumber] = useState("");
+  const [description, setDescription] = useState("");
+  const [message, setMessage] = useState("");
 
-
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({
-      itemName,
-      category,
-      location,
-      possession,
-      roomNumber,
-      currentLocation,
-      description,
-      ReportFoundItem,
-      photo,
-    });
+
+    try {
+      // Save document to Firestore (no Storage involved)
+      await addDoc(collection(db, "foundItems"), {
+        itemName,
+        category,
+        location,
+        possession,
+        currentLocation,
+        roomNumber,
+        description,
+        photoURL: "", // empty since we’re not uploading images
+        timestamp: serverTimestamp(),
+      });
+
+      setMessage("Item successfully submitted!");
+      // Reset form
+      setItemName("");
+      setCategory("");
+      setLocation("");
+      setPossession("yes");
+      setCurrentLocation("");
+      setRoomNumber("");
+      setDescription("");
+    } catch (error) {
+      console.error("Error adding document:", error);
+      setMessage("Failed to submit item. Check console for details.");
+    }
   };
 
   return (
@@ -34,12 +51,19 @@ const ReportFoundItem: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="itemName">Item Name:</label>
-            <input id="itemName" value={itemName} onChange={(e) => setItemName(e.target.value)} />
+          <input
+            id="itemName"
+            value={itemName}
+            onChange={(e) => setItemName(e.target.value)}
+          />
         </div>
 
         <div className="form-group">
           <label>Category:</label>
-          <select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
             <option value="">Select</option>
             <option value="electronics">Electronics</option>
             <option value="clothing">Clothing</option>
@@ -54,10 +78,12 @@ const ReportFoundItem: React.FC = () => {
           </select>
         </div>
 
-
         <div className="form-group">
           <label>Last Seen Location:</label>
-          <select value={location} onChange={(e) => setLocation(e.target.value)}>
+          <select
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          >
             <option value="">Select</option>
             <option value="Patrick F. Taylor Hall">Patrick F. Taylor Hall</option>
             <option value="Middleton Library">Middleton Library</option>
@@ -75,7 +101,6 @@ const ReportFoundItem: React.FC = () => {
             <option value="Tureaud Hall">Tureaud Hall</option>
             <option value="Campus Recreation">Campus Recreation</option>
             <option value="Barnes & Noble (Bookstore)">Barnes & Noble (Bookstore)</option>
-            <option value="Music & Dramatic Arts Building">Music & Dramatic Arts Building</option>
             <option value="The Quad">The Quad</option>
             <option value="Tiger Stadium">Tiger Stadium</option>
             <option value="Pete Maravich Assembly Center">Pete Maravich Assembly Center</option>
@@ -106,37 +131,36 @@ const ReportFoundItem: React.FC = () => {
           </div>
         </div>
 
-
         <div className="form-group">
-            <label>Where is the item currently?</label>
-                <select
-                value={currentLocation}
-                onChange={(e) => setCurrentLocation(e.target.value)} >
-                <option value="Select">Select</option>
-                <option value="Patrick F. Taylor Hall">Patrick F. Taylor Hall</option>
-                <option value="Middleton Library">Middleton Library</option>
-                <option value="Student Union">Student Union</option>
-                <option value="Lockett Hall">Lockett Hall</option>
-                <option value="Choppin Hall">Choppin Hall</option>
-                <option value="Business Education Complex">Business Education Complex</option>
-                <option value="French House">French House</option>
-                <option value="Manship School">Manship School</option>
-                <option value="Campus Recreation">Campus Recreation</option>
-                <option value="Tiger Stadium">Tiger Stadium</option>
-                <option value="Other">Other (Enter manually)</option>
-            </select>
+          <label>Where is the item currently?</label>
+          <select
+            value={currentLocation}
+            onChange={(e) => setCurrentLocation(e.target.value)}
+          >
+            <option value="Select">Select</option>
+            <option value="Patrick F. Taylor Hall">Patrick F. Taylor Hall</option>
+            <option value="Middleton Library">Middleton Library</option>
+            <option value="Student Union">Student Union</option>
+            <option value="Lockett Hall">Lockett Hall</option>
+            <option value="Choppin Hall">Choppin Hall</option>
+            <option value="Business Education Complex">Business Education Complex</option>
+            <option value="French House">French House</option>
+            <option value="Manship School">Manship School</option>
+            <option value="Campus Recreation">Campus Recreation</option>
+            <option value="Tiger Stadium">Tiger Stadium</option>
+            <option value="Other">Other (Enter manually)</option>
+          </select>
 
-            {(currentLocation === "Other" || currentLocation !== "") && (
-                <input
-                type="text"
-                placeholder="Enter room number (e.g., Room 132)"
-                value={roomNumber}
-                onChange={(e) => setRoomNumber(e.target.value)}
-                style={{ marginTop: "8px" }}
-                />
-            )}
+          {(currentLocation === "Other" || currentLocation !== "") && (
+            <input
+              type="text"
+              placeholder="Enter room number (e.g., Room 132)"
+              value={roomNumber}
+              onChange={(e) => setRoomNumber(e.target.value)}
+              style={{ marginTop: "8px" }}
+            />
+          )}
         </div>
-
 
         <div className="form-group">
           <label>Item Description:</label>
@@ -146,17 +170,11 @@ const ReportFoundItem: React.FC = () => {
           />
         </div>
 
-        <div className="form-group">
-          <label>Upload Photo:</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setPhoto(e.target.files?.[0] || null)}
-          />
-        </div>
+        <button type="submit" className="submit-btn">
+          Submit
+        </button>
 
-
-        <button type="submit" className="submit-btn">Submit</button>
+        {message && <p style={{ marginTop: "10px" }}>{message}</p>}
       </form>
     </div>
   );

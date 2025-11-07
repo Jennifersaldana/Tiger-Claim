@@ -7,6 +7,9 @@ node_modules
 /.pnp
 .pnp.js
 
+#firebase
+/src/config/firebase.ts 
+
 # testing
 /coverage
 
