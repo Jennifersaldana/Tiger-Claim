@@ -3,7 +3,7 @@ import "./App.css";
 import ReportFoundItem from "./report-found-item/found";
 
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <div className="app-container">
       <header className="lsu-header">

@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// Remove the ! (non-null assertion operator) - that's TypeScript
 const root = ReactDOM.createRoot(
   document.getElementById('root')!
 );

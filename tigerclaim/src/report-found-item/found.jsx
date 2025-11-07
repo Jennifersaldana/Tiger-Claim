@@ -1,19 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./found.css";
 
-interface FoundItem {
-  id: string;
-  itemName: string;
-  category: string;
-  location: string;
-  possession: string;
-  currentLocation: string;
-  roomNumber: string;
-  description: string;
-  photo?: string; // base64 image
-  createdAt: string;
-}
-
 const STORAGE_KEY = "foundItems.v1";
 
 // Simple UUID fallback
@@ -25,7 +12,7 @@ function generateId() {
   });
 }
 
-const ReportFoundItem: React.FC = () => {
+const ReportFoundItem = () => {
   const [itemName, setItemName] = useState("");
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
@@ -33,9 +20,9 @@ const ReportFoundItem: React.FC = () => {
   const [currentLocation, setCurrentLocation] = useState("");
   const [roomNumber, setRoomNumber] = useState("");
   const [description, setDescription] = useState("");
-  const [photo, setPhoto] = useState<string | undefined>("");
+  const [photo, setPhoto] = useState("");
   const [message, setMessage] = useState("");
-  const [items, setItems] = useState<FoundItem[]>([]);
+  const [items, setItems] = useState([]);
 
   // Load from localStorage
   useEffect(() => {
@@ -49,18 +36,18 @@ const ReportFoundItem: React.FC = () => {
   }, [items]);
 
   // Image upload handler
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = (ev) => setPhoto(ev.target?.result as string);
+    reader.onload = (ev) => setPhoto(ev.target?.result);
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    const newItem: FoundItem = {
+    const newItem = {
       id: generateId(),
       itemName,
       category,
@@ -83,7 +70,7 @@ const ReportFoundItem: React.FC = () => {
     setCurrentLocation("");
     setRoomNumber("");
     setDescription("");
-    setPhoto(undefined);
+    setPhoto("");
   };
 
   return (
