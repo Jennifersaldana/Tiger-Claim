@@ -1,0 +1,91 @@
+body {
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    background-color: #fafafa;
+  }
+  
+  /* Navbar */
+  .navbar {
+    background-color: #461d7c;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+  }
+  
+  .nav-btn {
+    background-color: #fdd023;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    margin-left: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  /* Header */
+  .header-section {
+    text-align: center;
+    margin-top: 2rem;
+  }
+  
+  .title {
+    color: #461d7c;
+    margin-bottom: 0.3rem;
+  }
+  
+  .subtitle {
+    color: #5f5f5f;
+    font-size: 0.9rem;
+  }
+  
+  /* Search Bar */
+  .search-bar {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  
+  .search-input {
+    width: 300px;
+    padding: 0.6rem;
+    border: 2px solid #461d7c;
+    border-radius: 8px 0 0 8px;
+  }
+  
+  .search-btn {
+    background-color: #fdd023;
+    border: none;
+    border-radius: 0 8px 8px 0;
+    padding: 0.6rem 1rem;
+    font-weight: bold;
+  }
+  
+  /* Filters */
+  .filters {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  
+  .filter-dropdown {
+    margin: 0 0.5rem;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Item Grid */
+  .item-grid {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .item-placeholder {
+    border: 2px dashed #ccc;
+    padding: 2rem;
+    color: #777;
+    border-radius: 12px;
+  }
+  
