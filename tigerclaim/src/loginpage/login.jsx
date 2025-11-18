@@ -8,16 +8,13 @@ const Login = ({ onLogin }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validate LSU email
+  
     if (!email.endsWith("@lsu.edu")) {
       setError("Please enter a valid LSU email (example: student@lsu.edu).");
       return;
     }
-
-    // Save email to localStorage
     localStorage.setItem("lostAndFoundUser", email);
 
-    // Send to App.jsx
     onLogin(email);
   };
 
