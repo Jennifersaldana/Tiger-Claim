@@ -6,15 +6,27 @@ import ReportFoundItem from "./report-found-item/found";
 import SearchLostItem from "./search-lost-item/search";
 import HomePage from "./homepage/homepage";
 import Login from "./loginpage/login";
+import Profile from "./profile/profile"; // Profile modal
+import defaultProfile from "./assets/profile.png"; // default profile image
 
 const App = () => {
   const [activePage, setActivePage] = useState("home");
   const [user, setUser] = useState("");
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [profilePhoto, setProfilePhoto] = useState(defaultProfile);
 
   // Load LSUE email if saved
   useEffect(() => {
     const saved = localStorage.getItem("lostAndFoundUser");
     if (saved) setUser(saved);
+  }, []);
+
+  // Load profile photo from localStorage
+  useEffect(() => {
+    const savedProfile = JSON.parse(localStorage.getItem("profileData") || "{}");
+    if (savedProfile?.photoPreview) {
+      setProfilePhoto(savedProfile.photoPreview);
+    }
   }, []);
 
   // Listener for navigation from HomePage
@@ -40,57 +52,73 @@ const App = () => {
         </div>
       </header>
 
+      {/* Profile icon in top-right corner */}
+      <div className="profile-dropdown-container">
+        <img
+          src={profilePhoto}
+          alt="Profile"
+          className="top-right-icon"
+          onClick={() => setIsProfileOpen(true)}
+        />
+      </div>
+
+      {/* Profile modal */}
+      {isProfileOpen && (
+        <Profile
+          onClose={() => {
+            setIsProfileOpen(false);
+            const savedProfile = JSON.parse(localStorage.getItem("profileData") || "{}");
+            if (savedProfile?.photoPreview) setProfilePhoto(savedProfile.photoPreview);
+          }}
+        />
+      )}
+
       {/* LAYOUT */}
       <div className="main-layout">
 
-      <aside className="sidebar">
-  <ul>
+        <aside className="sidebar">
+          <ul>
 
-    {/* HOME ICON — now at TOP */}
-    <li
-      className={activePage === "home" ? "active" : ""}
-      onClick={() => setActivePage("home")}
-    >
-      <img
-        src="/home.png"
-        alt="Home"
-        className="sidebar-icon"
-      />
-    </li>
+            {/* HOME ICON */}
+            <li
+              className={activePage === "home" ? "active" : ""}
+              onClick={() => setActivePage("home")}
+            >
+              <img src="/home.png" alt="Home" className="sidebar-icon" />
+            </li>
 
-    {/* REPORT FOUND */}
-    <li
-      className={activePage === "report" ? "active" : ""}
-      onClick={() => setActivePage("report")}
-    >
-      Report Found Item
-    </li>
+            {/* REPORT FOUND */}
+            <li
+              className={activePage === "report" ? "active" : ""}
+              onClick={() => setActivePage("report")}
+            >
+              Report Found Item
+            </li>
 
-    {/* SEARCH LOST */}
-    <li
-      className={activePage === "search" ? "active" : ""}
-      onClick={() => setActivePage("search")}
-    >
-      Search Lost Item
-    </li>
+            {/* SEARCH LOST */}
+            <li
+              className={activePage === "search" ? "active" : ""}
+              onClick={() => setActivePage("search")}
+            >
+              Search Lost Item
+            </li>
 
-    {/* LOGOUT */}
-    <li
-      className="logout-btn"
-      onClick={() => {
-        if (window.confirm("Are you sure you want to log out?")) {
-          localStorage.removeItem("lostAndFoundUser");
-          setUser("");
-          setActivePage("home");
-        }
-      }}
-    >
-      Logout
-    </li>
+            {/* LOGOUT */}
+            <li
+              className="logout-btn"
+              onClick={() => {
+                if (window.confirm("Are you sure you want to log out?")) {
+                  localStorage.removeItem("lostAndFoundUser");
+                  setUser("");
+                  setActivePage("home");
+                }
+              }}
+            >
+              Logout
+            </li>
 
-  </ul>
-</aside>
-
+          </ul>
+        </aside>
 
         {/* PAGE CONTENT */}
         <main className="main-content">
