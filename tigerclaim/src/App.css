@@ -83,3 +83,21 @@ body {
   color: white;
   font-size: 0.9rem;
 }
+/* HOME ICON ADJUSTMENT */
+.sidebar-icon {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Fix centering for the icon */
+.sidebar li img.sidebar-icon {
+  padding: 5px 0;
+}
+
+/* Active state */
+.sidebar li.active img.sidebar-icon {
+  filter: none; /* don't darken the image */
+}
