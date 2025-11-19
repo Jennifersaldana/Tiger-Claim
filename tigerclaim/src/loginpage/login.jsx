@@ -8,14 +8,13 @@ const Login = ({ onLogin }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-  
     if (!email.endsWith("@lsu.edu")) {
       setError("Please enter a valid LSU email (example: student@lsu.edu).");
       return;
     }
-    localStorage.setItem("lostAndFoundUser", email);
 
-    onLogin(email);
+    localStorage.setItem("lostAndFoundUser", email);
+    onLogin(email);  
   };
 
   return (
@@ -38,7 +37,9 @@ const Login = ({ onLogin }) => {
 
           {error && <p className="error">{error}</p>}
 
-          <button type="submit" className="login-btn">Continue</button>
+          <button type="submit" className="login-btn">
+            Continue
+          </button>
         </form>
       </div>
     </div>
