@@ -1,0 +1,58 @@
+.home-container {
+  padding: 40px;
+}
+
+/* WELCOME CARD */
+.home-card {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.home-card h1 {
+  color: var(--lsu-purple);
+}
+
+.home-sub {
+  margin-top: 10px;
+  color: #444;
+  font-size: 1.1rem;
+}
+
+/* FEATURE EXPLANATIONS */
+.feature-section {
+  margin-top: 30px;
+}
+
+.feature-section h2 {
+  color: var(--lsu-purple);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.feature-card {
+  background: white;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.1);
+  border-left: 6px solid var(--lsu-purple);
+}
+
+.feature-card h3 {
+  color: var(--lsu-purple);
+  margin-bottom: 10px;
+}
+
+.feature-card p {
+  color: #444;
+  line-height: 1.4rem;
+}
