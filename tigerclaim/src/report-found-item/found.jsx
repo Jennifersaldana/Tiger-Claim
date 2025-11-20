@@ -3,6 +3,29 @@ import "./found.css";
 
 const STORAGE_KEY = "foundItems.v1";
 
+// Reusable LSU locations list
+const LSU_LOCATIONS = [
+  "Patrick F. Taylor Hall",
+  "Middleton Library",
+  "Student Union",
+  "Lockett Hall",
+  "Choppin Hall",
+  "Business Education Complex",
+  "French House",
+  "Manship School",
+  "Cox Communications Academic Center",
+  "Hatcher Hall",
+  "Music & Dramatic Arts Building",
+  "Art & Design Complex",
+  "Tureaud Hall",
+  "Campus Recreation",
+  "Barnes & Noble (Bookstore)",
+  "The Quad",
+  "Tiger Stadium",
+  "Pete Maravich Assembly Center",
+  "Other"
+];
+
 // Simple UUID fallback
 function generateId() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
@@ -16,9 +39,15 @@ const ReportFoundItem = () => {
   const [itemName, setItemName] = useState("");
   const [category, setCategory] = useState("");
   const [location, setLocation] = useState("");
+  const [locationOther, setLocationOther] = useState("");
+
+  const [dateFound, setDateFound] = useState("");
+
   const [possession, setPossession] = useState("yes");
   const [currentLocation, setCurrentLocation] = useState("");
+  const [currentOther, setCurrentOther] = useState("");
   const [roomNumber, setRoomNumber] = useState("");
+
   const [description, setDescription] = useState("");
   const [photo, setPhoto] = useState("");
   const [message, setMessage] = useState("");
@@ -51,9 +80,11 @@ const ReportFoundItem = () => {
       id: generateId(),
       itemName,
       category,
-      location,
+      location: location === "Other" ? locationOther : location,
+      dateFound,
       possession,
-      currentLocation,
+      currentLocation:
+        currentLocation === "Other" ? currentOther : currentLocation,
       roomNumber,
       description,
       photo,
@@ -62,12 +93,16 @@ const ReportFoundItem = () => {
 
     setItems([newItem, ...items]);
     setMessage("Item saved locally!");
+
     // Reset form
     setItemName("");
     setCategory("");
     setLocation("");
+    setLocationOther("");
+    setDateFound("");
     setPossession("yes");
     setCurrentLocation("");
+    setCurrentOther("");
     setRoomNumber("");
     setDescription("");
     setPhoto("");
@@ -77,6 +112,7 @@ const ReportFoundItem = () => {
     <div className="report-container">
       <h1>Report Found Item</h1>
       <form onSubmit={handleSubmit}>
+
         {/* Item Name */}
         <div className="form-group">
           <label htmlFor="itemName">Item Name:</label>
@@ -110,7 +146,18 @@ const ReportFoundItem = () => {
           </select>
         </div>
 
-        {/* Last Seen */}
+        {/* Date Found */}
+        <div className="form-group">
+          <label>Date Found:</label>
+          <input
+            type="date"
+            value={dateFound}
+            onChange={(e) => setDateFound(e.target.value)}
+            required
+          />
+        </div>
+
+        {/* Last Seen Location */}
         <div className="form-group">
           <label>Last Seen Location:</label>
           <select
@@ -119,26 +166,22 @@ const ReportFoundItem = () => {
             required
           >
             <option value="">Select</option>
-            <option value="Patrick F. Taylor Hall">Patrick F. Taylor Hall</option>
-            <option value="Middleton Library">Middleton Library</option>
-            <option value="Student Union">Student Union</option>
-            <option value="Lockett Hall">Lockett Hall</option>
-            <option value="Choppin Hall">Choppin Hall</option>
-            <option value="Business Education Complex">Business Education Complex</option>
-            <option value="French House">French House</option>
-            <option value="Manship School">Manship School</option>
-            <option value="Cox Communications">Cox Communications</option>
-            <option value="Academic Center">Academic Center</option>
-            <option value="Hatcher Hall">Hatcher Hall</option>
-            <option value="Music & Dramatic Arts Building">Music & Dramatic Arts Building</option>
-            <option value="Art & Design Complex">Art & Design Complex</option>
-            <option value="Tureaud Hall">Tureaud Hall</option>
-            <option value="Campus Recreation">Campus Recreation</option>
-            <option value="Barnes & Noble (Bookstore)">Barnes & Noble (Bookstore)</option>
-            <option value="The Quad">The Quad</option>
-            <option value="Tiger Stadium">Tiger Stadium</option>
-            <option value="Pete Maravich Assembly Center">Pete Maravich Assembly Center</option>
+            {LSU_LOCATIONS.map((loc) => (
+              <option key={loc} value={loc}>{loc}</option>
+            ))}
           </select>
+
+          {/* Text box for Other */}
+          {location === "Other" && (
+            <input
+              type="text"
+              placeholder="Enter location"
+              value={locationOther}
+              onChange={(e) => setLocationOther(e.target.value)}
+              style={{ marginTop: "8px" }}
+              required
+            />
+          )}
         </div>
 
         {/* Possession */}
@@ -154,6 +197,7 @@ const ReportFoundItem = () => {
               />
               Yes
             </label>
+
             <label>
               <input
                 type="radio"
@@ -166,7 +210,7 @@ const ReportFoundItem = () => {
           </div>
         </div>
 
-        {/* Always show current location */}
+        {/* Where is item now */}
         <div className="form-group">
           <label>Where is the item currently?</label>
           <select
@@ -174,20 +218,25 @@ const ReportFoundItem = () => {
             onChange={(e) => setCurrentLocation(e.target.value)}
           >
             <option value="">Select</option>
-            <option value="Patrick F. Taylor Hall">Patrick F. Taylor Hall</option>
-            <option value="Middleton Library">Middleton Library</option>
-            <option value="Student Union">Student Union</option>
-            <option value="Lockett Hall">Lockett Hall</option>
-            <option value="Choppin Hall">Choppin Hall</option>
-            <option value="Business Education Complex">Business Education Complex</option>
-            <option value="French House">French House</option>
-            <option value="Manship School">Manship School</option>
-            <option value="Campus Recreation">Campus Recreation</option>
-            <option value="Tiger Stadium">Tiger Stadium</option>
-            <option value="Other">Other (Enter manually)</option>
+            {LSU_LOCATIONS.map((loc) => (
+              <option key={loc} value={loc}>{loc}</option>
+            ))}
           </select>
 
-          {(currentLocation === "Other" || currentLocation !== "") && (
+          {/* Other box */}
+          {currentLocation === "Other" && (
+            <input
+              type="text"
+              placeholder="Enter location"
+              value={currentOther}
+              onChange={(e) => setCurrentOther(e.target.value)}
+              style={{ marginTop: "8px" }}
+              required
+            />
+          )}
+
+          {/* Room number */}
+          {(currentLocation !== "" || currentOther !== "") && (
             <input
               type="text"
               placeholder="Enter room number (e.g., Room 132)"
@@ -208,7 +257,7 @@ const ReportFoundItem = () => {
           />
         </div>
 
-        {/* Upload Photo */}
+        {/* Photo Upload */}
         <div className="form-group">
           <label>Upload Photo:</label>
           <input type="file" accept="image/*" onChange={handleImageUpload} />
@@ -226,10 +275,7 @@ const ReportFoundItem = () => {
           )}
         </div>
 
-        <button type="submit" className="submit-btn">
-          Submit
-        </button>
-
+        <button type="submit" className="submit-btn">Submit</button>
         {message && <p style={{ marginTop: "10px" }}>{message}</p>}
       </form>
     </div>

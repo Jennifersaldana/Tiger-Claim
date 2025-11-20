@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
 
 // Pages
 import ReportFoundItem from "./report-found-item/found";
@@ -7,21 +9,34 @@ import SearchLostItem from "./search-lost-item/search";
 import HomePage from "./homepage/homepage";
 import Login from "./loginpage/login";
 import Profile from "./profile/profile"; // Profile modal
-import defaultProfile from "./assets/profile.png"; // default profile image
+
+// Assets
+import defaultProfile from "./assets/profile.png";
+
+// Notifications System
+import NotificationsDropdown from "../src/notifications/notification";
+import { unreadCount } from "../src/notifications/notifications";
 
 const App = () => {
   const [activePage, setActivePage] = useState("home");
   const [user, setUser] = useState("");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [profilePhoto, setProfilePhoto] = useState(defaultProfile);
+  const [notifCount, setNotifCount] = useState(0);
+  const [showNotif, setShowNotif] = useState(false);
 
-  // Load LSUE email if saved
+  // Load unread notifications when user loads
+  useEffect(() => {
+    if (user) setNotifCount(unreadCount(user));
+  }, [user]);
+
+  // Load saved user email
   useEffect(() => {
     const saved = localStorage.getItem("lostAndFoundUser");
     if (saved) setUser(saved);
   }, []);
 
-  // Load profile photo from localStorage
+  // Load saved profile photo
   useEffect(() => {
     const savedProfile = JSON.parse(localStorage.getItem("profileData") || "{}");
     if (savedProfile?.photoPreview) {
@@ -50,25 +65,52 @@ const App = () => {
           <img src="/paw.png" alt="LSU Logo" className="lsu-logo" />
           <h1 className="header-title">Tiger Claim</h1>
         </div>
-      </header>
 
-      {/* Profile icon in top-right corner */}
-      <div className="profile-dropdown-container">
-        <img
-          src={profilePhoto}
-          alt="Profile"
-          className="top-right-icon"
-          onClick={() => setIsProfileOpen(true)}
-        />
-      </div>
+        {/* TOP RIGHT ICON BAR (INSIDE HEADER NOW!) */}
+        <div className="top-right-icons">
+
+          {/* NOTIFICATION BELL */}
+          <div
+            className="notification-icon"
+            onClick={() => setShowNotif(!showNotif)}
+          >
+            <FontAwesomeIcon icon={faBell} className="bell-icon" />
+            {notifCount > 0 && (
+              <span className="notif-badge">{notifCount}</span>
+            )}
+          </div>
+
+          {/* PROFILE ICON */}
+          <img
+            src={profilePhoto}
+            alt="Profile"
+            className="top-right-icon"
+            onClick={() => setIsProfileOpen(true)}
+          />
+
+          {/* NOTIFICATION DROPDOWN */}
+          {showNotif && (
+            <NotificationsDropdown
+              user={user}
+              onClose={() => {
+                setNotifCount(unreadCount(user));
+                setShowNotif(false);
+              }}
+            />
+          )}
+        </div>
+      </header>
 
       {/* Profile modal */}
       {isProfileOpen && (
         <Profile
           onClose={() => {
             setIsProfileOpen(false);
-            const savedProfile = JSON.parse(localStorage.getItem("profileData") || "{}");
-            if (savedProfile?.photoPreview) setProfilePhoto(savedProfile.photoPreview);
+            const savedProfile = JSON.parse(
+              localStorage.getItem("profileData") || "{}"
+            );
+            if (savedProfile?.photoPreview)
+              setProfilePhoto(savedProfile.photoPreview);
           }}
         />
       )}
@@ -78,7 +120,6 @@ const App = () => {
 
         <aside className="sidebar">
           <ul>
-
             {/* HOME ICON */}
             <li
               className={activePage === "home" ? "active" : ""}
@@ -116,7 +157,6 @@ const App = () => {
             >
               Logout
             </li>
-
           </ul>
         </aside>
 
@@ -126,14 +166,12 @@ const App = () => {
           {activePage === "report" && <ReportFoundItem />}
           {activePage === "search" && <SearchLostItem />}
         </main>
-
       </div>
 
       {/* FOOTER */}
       <footer className="footer">
         © {new Date().getFullYear()} Group 6 | Tiger Claim • All Rights Reserved
       </footer>
-
     </div>
   );
 };

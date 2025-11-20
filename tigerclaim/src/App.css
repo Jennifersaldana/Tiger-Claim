@@ -101,3 +101,97 @@ body {
 .sidebar li.active img.sidebar-icon {
   filter: none; /* don't darken the image */
 }
+
+/* ---- TOP RIGHT ICONS ---- */
+.top-right-icons {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+/* ---- NOTIFICATION BELl ---- */
+.notification-icon {
+  position: relative;
+  cursor: pointer;
+}
+
+.notification-icon img {
+  width: 26px;
+  height: 26px;
+  filter: brightness(0) invert(1); /* white */
+}
+
+/* Badge (red dot) */
+.notif-badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  background-color: red;
+  color: white;
+  font-size: 11px;
+  padding: 2px 5px;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+/* ---- DROPDOWN ---- */
+.notif-dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  width: 260px;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  border-radius: 8px;
+  padding: 12px;
+  z-index: 999;
+}
+
+.notif-dropdown h3 {
+  margin: 0 0 10px;
+  color: var(--lsu-purple);
+  border-bottom: 2px solid var(--lsu-gold);
+  padding-bottom: 6px;
+  font-size: 1.1rem;
+}
+
+.notif-empty {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.notif-item {
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  background: #fdd02333;
+  cursor: pointer;
+}
+
+.notif-item.seen {
+  background: #eee;
+}
+
+.notif-item:hover {
+  background: #fdd02377;
+}
+
+/* ---- PROFILE ICON ---- */
+.top-right-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  cursor: pointer;
+}
+
+.bell-icon {
+  font-size: 26px;
+  color: white; /* LSU Header is purple → white bell looks clean */
+  cursor: pointer;
+}
