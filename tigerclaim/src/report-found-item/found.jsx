@@ -38,6 +38,7 @@ function generateId() {
 const ReportFoundItem = () => {
   const [itemName, setItemName] = useState("");
   const [category, setCategory] = useState("");
+  const [categoryOther, setCategoryOther] = useState("");
   const [location, setLocation] = useState("");
   const [locationOther, setLocationOther] = useState("");
 
@@ -79,7 +80,7 @@ const ReportFoundItem = () => {
     const newItem = {
       id: generateId(),
       itemName,
-      category,
+      category: category === "Other" ? categoryOther : category,
       location: location === "Other" ? locationOther : location,
       dateFound,
       possession,
@@ -97,6 +98,7 @@ const ReportFoundItem = () => {
     // Reset form
     setItemName("");
     setCategory("");
+    setCategoryOther("");
     setLocation("");
     setLocationOther("");
     setDateFound("");
@@ -144,6 +146,17 @@ const ReportFoundItem = () => {
             <option value="Jewelry">Jewelry</option>
             <option value="Other">Other</option>
           </select>
+          {/* Other for Category */}
+          {category === "Other" && (
+            <input
+              type="text"
+              placeholder="Enter custom category"
+              value={categoryOther}
+              onChange={(e) => setCategoryOther(e.target.value)}
+              style={{ marginTop: "8px" }}
+              required
+            />
+          )}
         </div>
 
         {/* Date Found */}
@@ -171,7 +184,7 @@ const ReportFoundItem = () => {
             ))}
           </select>
 
-          {/* Text box for Other */}
+          {/* Other for Location */}
           {location === "Other" && (
             <input
               type="text"
@@ -210,7 +223,7 @@ const ReportFoundItem = () => {
           </div>
         </div>
 
-        {/* Where is item now */}
+        {/* Current item location */}
         <div className="form-group">
           <label>Where is the item currently?</label>
           <select
@@ -223,7 +236,7 @@ const ReportFoundItem = () => {
             ))}
           </select>
 
-          {/* Other box */}
+          {/* Other for current location */}
           {currentLocation === "Other" && (
             <input
               type="text"
