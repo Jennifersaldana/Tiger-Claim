@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import './profile.css';
 import defaultProfile from '../assets/profile.png';
 
-function Profile({ onClose }) {
+function Profile({ onClose, onProfileUpdate }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -12,23 +12,22 @@ function Profile({ onClose }) {
 
   const fileInputRef = useRef(null);
 
-  // Load profile from localStorage and default to current logged-in user
   useEffect(() => {
-    const savedProfile = JSON.parse(localStorage.getItem("profileData") || "{}");
     const currentUser = localStorage.getItem("lostAndFoundUser") || "";
+    setEmail(currentUser);
 
-    if (savedProfile && savedProfile.email === currentUser) {
+    const allProfiles = JSON.parse(localStorage.getItem("allProfiles") || "{}");
+    const savedProfile = allProfiles[currentUser];
+
+    if (savedProfile) {
       setName(savedProfile.name || "");
       setPhone(savedProfile.phone || "");
       setPhotoPreview(savedProfile.photoPreview || defaultProfile);
     } else {
-      // If no profile saved for this user, clear name/phone and set email
       setName("");
       setPhone("");
       setPhotoPreview(defaultProfile);
     }
-
-    setEmail(currentUser); // Always show logged-in email
   }, []);
 
   const validateEmail = (value) => {
@@ -41,16 +40,18 @@ function Profile({ onClose }) {
     setPhoneError(value && digits.length !== 10 ? "Phone number must be 10 digits" : "");
   };
 
-  const isFormValid = () => {
-    if (!email || emailError || phoneError) return false;
-    return true;
-  };
+  const isFormValid = () => !emailError && !phoneError && email;
 
   const handleSave = () => {
     if (!isFormValid()) return;
 
-    const profileData = { name, email, phone, photoPreview };
-    localStorage.setItem("profileData", JSON.stringify(profileData));
+    const currentUser = email;
+    const allProfiles = JSON.parse(localStorage.getItem("allProfiles") || "{}");
+
+    allProfiles[currentUser] = { name, email, phone, photoPreview };
+    localStorage.setItem("allProfiles", JSON.stringify(allProfiles));
+
+    if (onProfileUpdate) onProfileUpdate(allProfiles[currentUser]);
     onClose();
   };
 
@@ -64,7 +65,6 @@ function Profile({ onClose }) {
   };
 
   const handleRemovePhoto = () => setPhotoPreview(defaultProfile);
-
   const triggerFileSelect = () => fileInputRef.current.click();
 
   return (
@@ -73,7 +73,6 @@ function Profile({ onClose }) {
         <h2>Edit Profile</h2>
         <div className="profile-header">
           <img src={photoPreview} alt="Profile" className="profile-image" />
-
           <input
             type="file"
             accept="image/*"
@@ -81,33 +80,18 @@ function Profile({ onClose }) {
             onChange={handleFileChange}
             style={{ display: 'none' }}
           />
-
           <div className="photo-buttons">
-            <button className="change-photo-btn" onClick={triggerFileSelect}>
-              Change Photo
-            </button>
-            <button className="remove-photo-btn" onClick={handleRemovePhoto}>
-              Remove Photo
-            </button>
+            <button className="change-photo-btn" onClick={triggerFileSelect}>Change Photo</button>
+            <button className="remove-photo-btn" onClick={handleRemovePhoto}>Remove Photo</button>
           </div>
         </div>
-
         <div className="profile-body">
-          <input
-            type="text"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+          <input type="text" placeholder="Name" value={name} onChange={e => setName(e.target.value)} />
           <input
             type="email"
             placeholder="LSU Email"
             value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              validateEmail(e.target.value);
-            }}
-            className={emailError ? "invalid-input" : ""}
+            onChange={e => { setEmail(e.target.value); validateEmail(e.target.value); }}
           />
           {emailError && <div className="error-message">{emailError}</div>}
 
@@ -115,22 +99,12 @@ function Profile({ onClose }) {
             type="tel"
             placeholder="Phone (optional)"
             value={phone}
-            onChange={(e) => {
-              setPhone(e.target.value);
-              validatePhone(e.target.value);
-            }}
-            className={phoneError ? "invalid-input" : ""}
+            onChange={e => { setPhone(e.target.value); validatePhone(e.target.value); }}
           />
           {phoneError && <div className="error-message">{phoneError}</div>}
 
           <div className="profile-buttons">
-            <button
-              onClick={handleSave}
-              disabled={!isFormValid()}
-              className={!isFormValid() ? "disabled-button" : ""}
-            >
-              Save Profile
-            </button>
+            <button onClick={handleSave} disabled={!isFormValid()}>Save Profile</button>
             <button onClick={onClose}>Cancel</button>
           </div>
         </div>

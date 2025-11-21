@@ -3,20 +3,18 @@ import "./App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 
-
-
 // Pages
 import ReportFoundItem from "./report-found-item/found";
 import SearchLostItem from "./search-lost-item/search";
 import HomePage from "./homepage/homepage";
 import Login from "./loginpage/login";
-import Profile from "./profile/profile"; // Profile modal
-import ReportLostItem from "./reportlostitem/lost";
+import Profile from "./profile/profile"; 
+import ReportLostItem from "./reportlostitem/lost";  // <-- KEEP THIS
 
 // Assets
 import defaultProfile from "./assets/profile.png";
 
-// Notifications System
+// Notifications
 import NotificationsDropdown from "../src/notifications/notification";
 import { unreadCount } from "../src/notifications/notifications";
 
@@ -25,43 +23,48 @@ const App = () => {
   const [user, setUser] = useState("");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [profilePhoto, setProfilePhoto] = useState(defaultProfile);
+  const [profileName, setProfileName] = useState("");
+  const [profilePhone, setProfilePhone] = useState("");
   const [notifCount, setNotifCount] = useState(0);
   const [showNotif, setShowNotif] = useState(false);
 
-  // Load unread notifications when user loads
+  // Load saved user email
+  useEffect(() => {
+    const savedUser = localStorage.getItem("lostAndFoundUser");
+    if (savedUser) setUser(savedUser);
+  }, []);
+
+  // Load saved profile for current user
+  useEffect(() => {
+    if (!user) return;
+
+    const allProfiles = JSON.parse(localStorage.getItem("allProfiles") || "{}");
+    const profile = allProfiles[user] || {};
+
+    setProfilePhoto(profile.photoPreview || defaultProfile);
+    setProfileName(profile.name || "");
+    setProfilePhone(profile.phone || "");
+  }, [user]);
+
+  // Load unread notifications
   useEffect(() => {
     if (user) setNotifCount(unreadCount(user));
   }, [user]);
 
-  // Load saved user email
-  useEffect(() => {
-    const saved = localStorage.getItem("lostAndFoundUser");
-    if (saved) setUser(saved);
-  }, []);
-
-  // Load saved profile photo
-  useEffect(() => {
-    const savedProfile = JSON.parse(localStorage.getItem("profileData") || "{}");
-    if (savedProfile?.photoPreview) {
-      setProfilePhoto(savedProfile.photoPreview);
-    }
-  }, []);
-
-  // Listener for navigation from HomePage
+  // Navigation listener
   useEffect(() => {
     const handler = (e) => setActivePage(e.detail);
     window.addEventListener("nav", handler);
     return () => window.removeEventListener("nav", handler);
   }, []);
 
-  // If NOT logged in → show Login
+  // If not logged in → login page
   if (!user) {
     return <Login onLogin={setUser} />;
   }
 
   return (
     <div className="app-container">
-
       {/* HEADER */}
       <header className="lsu-header">
         <div className="header-content">
@@ -69,18 +72,15 @@ const App = () => {
           <h1 className="header-title">Tiger Claim</h1>
         </div>
 
-        {/* TOP RIGHT ICON BAR (INSIDE HEADER NOW!) */}
         <div className="top-right-icons">
 
-          {/* NOTIFICATION BELL */}
+          {/* NOTIFICATIONS */}
           <div
             className="notification-icon"
             onClick={() => setShowNotif(!showNotif)}
           >
             <FontAwesomeIcon icon={faBell} className="bell-icon" />
-            {notifCount > 0 && (
-              <span className="notif-badge">{notifCount}</span>
-            )}
+            {notifCount > 0 && <span className="notif-badge">{notifCount}</span>}
           </div>
 
           {/* PROFILE ICON */}
@@ -91,7 +91,6 @@ const App = () => {
             onClick={() => setIsProfileOpen(true)}
           />
 
-          {/* NOTIFICATION DROPDOWN */}
           {showNotif && (
             <NotificationsDropdown
               user={user}
@@ -104,35 +103,37 @@ const App = () => {
         </div>
       </header>
 
-      {/* Profile modal */}
+      {/* PROFILE MODAL */}
       {isProfileOpen && (
         <Profile
-          onClose={() => {
-            setIsProfileOpen(false);
-            const savedProfile = JSON.parse(
-              localStorage.getItem("profileData") || "{}"
-            );
-            if (savedProfile?.photoPreview)
-              setProfilePhoto(savedProfile.photoPreview);
+          onClose={() => setIsProfileOpen(false)}
+          onProfileUpdate={(updatedProfile) => {
+            setProfilePhoto(updatedProfile.photoPreview || defaultProfile);
+            setProfileName(updatedProfile.name || "");
+            setProfilePhone(updatedProfile.phone || "");
           }}
         />
       )}
 
       {/* LAYOUT */}
       <div className="main-layout">
-
         <aside className="sidebar">
           <ul>
-            {/* HOME ICON */}
             <li
               className={activePage === "home" ? "active" : ""}
               onClick={() => setActivePage("home")}
             >
               <img src="/home.png" alt="Home" className="sidebar-icon" />
             </li>
-<li onClick={() => setActivePage("reportlost")}>Report Lost Item</li>
 
-            {/* REPORT FOUND */}
+            {/* REPORT LOST ITEM — ADDED BACK */}
+            <li
+              className={activePage === "reportlost" ? "active" : ""}
+              onClick={() => setActivePage("reportlost")}
+            >
+              Report Lost Item
+            </li>
+
             <li
               className={activePage === "report" ? "active" : ""}
               onClick={() => setActivePage("report")}
@@ -140,7 +141,6 @@ const App = () => {
               Report Found Item
             </li>
 
-            {/* SEARCH LOST */}
             <li
               className={activePage === "search" ? "active" : ""}
               onClick={() => setActivePage("search")}
@@ -148,7 +148,6 @@ const App = () => {
               Search Lost Item
             </li>
 
-            {/* LOGOUT */}
             <li
               className="logout-btn"
               onClick={() => {
@@ -156,6 +155,9 @@ const App = () => {
                   localStorage.removeItem("lostAndFoundUser");
                   setUser("");
                   setActivePage("home");
+                  setProfilePhoto(defaultProfile);
+                  setProfileName("");
+                  setProfilePhone("");
                 }
               }}
             >
@@ -164,17 +166,14 @@ const App = () => {
           </ul>
         </aside>
 
-        {/* PAGE CONTENT */}
         <main className="main-content">
           {activePage === "home" && <HomePage user={user} />}
           {activePage === "report" && <ReportFoundItem />}
           {activePage === "search" && <SearchLostItem />}
-          {activePage === "reportlost" && <ReportLostItem />}
-
+          {activePage === "reportlost" && <ReportLostItem />} {/* KEEP */}
         </main>
       </div>
 
-      {/* FOOTER */}
       <footer className="footer">
         © {new Date().getFullYear()} Group 6 | Tiger Claim • All Rights Reserved
       </footer>
