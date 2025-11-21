@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./search.css";
-import imgWater from "../assets/water.png";
-import imgBackpack from "../assets/backpack.png";
+//import imgWater from "../assets/water.png";
+//import imgBackpack from "../assets/backpack.png";
 
 const STORAGE_KEY = "foundItems.v1";
 
@@ -13,6 +13,8 @@ const SearchLostItem = () => {
   });
 
   const [items, setItems] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [claimDescription, setClaimDescription] = useState("");
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -26,7 +28,8 @@ const SearchLostItem = () => {
       category: "Accessories",
       location: "Tiger Stadium",
       date: "2025-11-05",
-      image: imgWater,
+      description: "purple water bottle with black top and LSU on the bottle",
+      claimedBy: null,
     },
     {
       id: "sample-2",
@@ -34,7 +37,8 @@ const SearchLostItem = () => {
       category: "Clothing",
       location: "Middleton Library",
       date: "2025-11-05",
-      image: imgBackpack,
+      description: "gold backpack with black straps and silver zippers" ,
+      claimedBy: null,
     },
   ];
 
@@ -50,7 +54,9 @@ const SearchLostItem = () => {
       category: item.category,
       location: item.location,
       date: item.createdAt?.slice(0, 10),
-      image: item.photo || null,
+      description: item.description || "No description provided",
+      claimedBy: item.claimedBy || null,
+      pendingClaim: item.pendingClaim || null,
     }));
 
     setItems([...sampleItems, ...storedItems]);
@@ -65,6 +71,25 @@ const SearchLostItem = () => {
 
     return matchCategory && matchLocation && matchDate;
   });
+
+  const submitClaim = () => {
+    //Place Holder
+    const userId = "user_123";
+
+    const updated = items.map((item) => item.id === selectedItem.id ?
+    {
+        ...item, 
+        pendingClaim: {userId, claimDescription},
+    }
+    : item
+    );
+
+    setItems(updated);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+
+    setSelectedItem(null);
+    setClaimDescription("");
+};
 
   return (
     <div className="search-container">
@@ -138,29 +163,54 @@ const SearchLostItem = () => {
       <div className="items-grid">
         {filteredItems.map((item) => (
           <div key={item.id} className="item-card">
+
             
-            {item.image ? (
-              <img src={item.image} alt={item.name} className="item-image" />
-            ) : (
-              <div className="item-image placeholder">No Image</div>
-            )}
+            <div className="item-image placeholder">
+              Image Not Available
+            </div>
 
             <h3>{item.name}</h3>
-            <p>
-              <strong>Category:</strong> {item.category}
-            </p>
-            <p>
-              <strong>Location:</strong> {item.location}
-            </p>
-            <p>
-              <strong>Date Found:</strong> {item.date}
-            </p>
+            <p><strong>Category:</strong> {item.category}</p>
+            <p><strong>Location:</strong> {item.location}</p>
+            <p><strong>Date Found:</strong> {item.date}</p>
 
-            {/* CLAIM BUTTON */}
-            <button className="claim-btn">Claim</button>
+            {/* Claim Button Logic */}
+            {item.claimedBy ? (
+              <p className="claimed-text">Already Claimed</p>
+            ) : item.pendingClaim ? (
+              <p className="pending-text">Claim Pending Approval</p>
+            ) : (
+              <button
+                className="claim-btn"
+                onClick={() => setSelectedItem(item)}
+              >
+                Claim Item
+              </button>
+            )}
           </div>
         ))}
       </div>
+
+      {selectedItem && (
+        <div className="modal-overlay">
+          <div className="modal">
+            <h3>Claim: {selectedItem.name}</h3>
+            <p>Please describe your item so the founder can verify:</p>
+
+            <textarea
+              value={claimDescription}
+              onChange={(e) => setClaimDescription(e.target.value)}
+              placeholder="Describe markings, color, contents, etc..."
+            />
+
+            <div className="modal-buttons">
+              <button onClick={submitClaim}>Submit Claim</button>
+              <button onClick={() => setSelectedItem(null)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
