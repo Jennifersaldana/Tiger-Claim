@@ -3,12 +3,15 @@ import "./App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 
+
+
 // Pages
 import ReportFoundItem from "./report-found-item/found";
 import SearchLostItem from "./search-lost-item/search";
 import HomePage from "./homepage/homepage";
 import Login from "./loginpage/login";
 import Profile from "./profile/profile"; // Profile modal
+import ReportLostItem from "./reportlostitem/lost";
 
 // Assets
 import defaultProfile from "./assets/profile.png";
@@ -127,6 +130,7 @@ const App = () => {
             >
               <img src="/home.png" alt="Home" className="sidebar-icon" />
             </li>
+<li onClick={() => setActivePage("reportlost")}>Report Lost Item</li>
 
             {/* REPORT FOUND */}
             <li
@@ -165,6 +169,8 @@ const App = () => {
           {activePage === "home" && <HomePage user={user} />}
           {activePage === "report" && <ReportFoundItem />}
           {activePage === "search" && <SearchLostItem />}
+          {activePage === "reportlost" && <ReportLostItem />}
+
         </main>
       </div>
 

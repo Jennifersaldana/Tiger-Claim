@@ -1,0 +1,45 @@
+.lost-container {
+  width: 500px;
+  margin: 40px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+}
+
+.lost-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.lost-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.lost-form input,
+.lost-form textarea {
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.lost-form textarea {
+  height: 100px;
+}
+
+.lost-form button {
+  padding: 12px;
+  background: purple;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.lost-form button:hover {
+  background: #5e0c85;
+}
