@@ -57,7 +57,8 @@ const LostItemPage = () => {
   return (
     <div className="reportlost-container">
       <div className="reportlost-box">
-        <h1>Report a Lost Item</h1>
+        <h1 className="lost-title">Report a Lost Item</h1>
+
 
         <form onSubmit={handleSubmit} className="lost-form">
 

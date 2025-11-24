@@ -73,3 +73,11 @@ textarea {
 .submit-btn:hover {
   background-color: #371764;
 }
+.lost-title {
+  color: var(--lsu-purple);      /* makes it purple */
+  margin-bottom: 16px;
+  font-size: 28px;
+  font-weight: 700;
+  border-bottom: 3px solid var(--lsu-gold);
+  padding-bottom: 8px;
+}
