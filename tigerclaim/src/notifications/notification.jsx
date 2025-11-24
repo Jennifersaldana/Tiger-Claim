@@ -3,6 +3,7 @@ import {
   getNotifications,
   markAsRead
 } from "./notifications.js";
+import "./notification.css";
 
 const NotificationsDropdown = ({ user, onClose }) => {
   const list = getNotifications(user);
@@ -15,6 +16,7 @@ const NotificationsDropdown = ({ user, onClose }) => {
   return (
     <div className="notif-dropdown">
       <h3>Notifications</h3>
+      <div className="notif-divider"></div>
 
       {list.length === 0 && (
         <p className="notif-empty">No notifications</p>

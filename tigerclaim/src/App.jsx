@@ -80,7 +80,8 @@ const App = () => {
             onClick={() => setShowNotif(!showNotif)}
           >
             <FontAwesomeIcon icon={faBell} className="bell-icon" />
-            {notifCount > 0 && <span className="notif-badge">{notifCount}</span>}
+            {notifCount > 0 && <span className="notif-badge"></span>}
+
           </div>
 
           {/* PROFILE ICON */}
@@ -123,7 +124,17 @@ const App = () => {
               className={activePage === "home" ? "active" : ""}
               onClick={() => setActivePage("home")}
             >
-              <img src="/home.png" alt="Home" className="sidebar-icon" />
+               {/*<img src="/home.png" alt="Home" className="sidebar-icon" /> */}
+              Welcome
+            </li>
+
+
+
+            <li
+              className={activePage === "search" ? "active" : ""}
+              onClick={() => setActivePage("search")}
+            >
+              Search Found Items
             </li>
 
             {/* REPORT LOST ITEM — ADDED BACK */}
@@ -141,12 +152,6 @@ const App = () => {
               Report Found Item
             </li>
 
-            <li
-              className={activePage === "search" ? "active" : ""}
-              onClick={() => setActivePage("search")}
-            >
-              Search Lost Item
-            </li>
 
             <li
               className="logout-btn"

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./lost.css";
+import { addNotification } from "../notifications/notifications";
 
 const ReportLostItem = () => {
   const [itemName, setItemName] = useState("");
@@ -16,6 +17,11 @@ const ReportLostItem = () => {
     });
 
     alert("Lost item submitted!");
+
+    // notifs for "You reported a lost item"
+    const email = localStorage.getItem("lostAndFoundUser");
+    addNotification(email, `You reported a lost item: ${itemName}`);
+
   };
 
   return (

@@ -114,9 +114,12 @@ body {
 
 /* ---- NOTIFICATION BELl ---- */
 .notification-icon {
-  position: relative;
+  position: relative;  /* needed so the red dot positions correctly */
+  display: inline-block;
   cursor: pointer;
+  margin-right: 20px;  /* spacing from profile icon */
 }
+
 
 .notification-icon img {
   width: 26px;
@@ -127,14 +130,15 @@ body {
 /* Badge (red dot) */
 .notif-badge {
   position: absolute;
-  top: -6px;
-  right: -6px;
-  background-color: red;
-  color: white;
-  font-size: 11px;
-  padding: 2px 5px;
-  border-radius: 50%;
-  font-weight: bold;
+  top: -2px;          /* fine-tuned for centering */
+  right: -2px;
+  width: 12px;
+  height: 12px;
+
+  background: #d9534f;
+  border-radius: 50%;  /* makes it a perfect circle */
+
+  box-shadow: 0 0 4px rgba(0,0,0,0.3);
 }
 
 /* ---- DROPDOWN ---- */
@@ -191,7 +195,8 @@ body {
 }
 
 .bell-icon {
-  font-size: 26px;
-  color: white; /* LSU Header is purple → white bell looks clean */
-  cursor: pointer;
+  font-size: 26px;     /* perfect size for a badge */
+  color: white;        /* LSU header uses white icons */
+
 }
+
