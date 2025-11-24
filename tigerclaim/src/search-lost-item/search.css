@@ -58,4 +58,20 @@
     margin-bottom: 10px;
     font-weight: bold;
   }
+
+  .claim-btn {
+    background-color: var(--lsu-gold);
+    color: var(--text-dark);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s ease-in-out;
+    margin-top: 10px;
+  }
+  
+  .claim-btn:hover {
+    background-color: #e5b800;
+  }
   
