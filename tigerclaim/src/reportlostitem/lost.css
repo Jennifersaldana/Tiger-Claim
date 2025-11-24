@@ -1,15 +1,29 @@
-.lost-container {
-  width: 500px;
-  margin: 40px auto;
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+:root {
+  --lsu-purple: #461d7c;
+  --lsu-gold: #fdd023;
+  --text-dark: #2d2d2d;
 }
 
-.lost-container h2 {
+.lost-page {
+  display: flex;
+  justify-content: center;
+  padding-top: 40px;
+}
+
+.lost-container {
+  width: 700px;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.lost-container h1 {
   text-align: center;
-  margin-bottom: 20px;
+  color: var(--lsu-purple);
+  margin-bottom: 24px;
+  border-bottom: 3px solid var(--lsu-gold);
+  padding-bottom: 8px;
 }
 
 .lost-form {
@@ -17,29 +31,45 @@
   flex-direction: column;
 }
 
-.lost-form input,
-.lost-form textarea {
-  margin-bottom: 15px;
-  padding: 10px;
+.form-group {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text-dark);
+}
+
+input,
+select,
+textarea {
+  padding: 12px;
+  font-size: 15px;
   border: 1px solid #ccc;
   border-radius: 6px;
-  font-size: 15px;
 }
 
-.lost-form textarea {
-  height: 100px;
+textarea {
+  resize: vertical;
+  height: 120px;
 }
 
-.lost-form button {
-  padding: 12px;
-  background: purple;
+.submit-btn {
+  width: 100%;
+  background-color: var(--lsu-purple);
   color: white;
+  padding: 14px;
   border: none;
   border-radius: 6px;
-  font-size: 16px;
+  font-size: 17px;
   cursor: pointer;
+  margin-top: 10px;
+  transition: 0.2s;
 }
 
-.lost-form button:hover {
-  background: #5e0c85;
+.submit-btn:hover {
+  background-color: #371764;
 }
