@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import './profile.css';
 import defaultProfile from '../assets/profile.png';
-import { addNotification } from "../notifications/notifications"; 
+import { addNotification, pushNotification } from "../notifications/notifications"; 
 
 function Profile({ onClose, onProfileUpdate }) {
   const [name, setName] = useState("");
@@ -53,7 +53,7 @@ function Profile({ onClose, onProfileUpdate }) {
     localStorage.setItem("allProfiles", JSON.stringify(allProfiles));
 
     if (onProfileUpdate) onProfileUpdate(allProfiles[currentUser]);
-    addNotification(currentUser, "Your profile has been updated.");
+    pushNotification(currentUser, "Your profile has been updated.");
     onClose();
   };
 

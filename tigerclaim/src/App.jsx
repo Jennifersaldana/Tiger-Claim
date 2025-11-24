@@ -27,6 +27,12 @@ const App = () => {
   const [profilePhone, setProfilePhone] = useState("");
   const [notifCount, setNotifCount] = useState(0);
   const [showNotif, setShowNotif] = useState(false);
+  
+  useEffect(() => {
+    const handler = () => setNotifCount(unreadCount(user));
+    window.addEventListener("notifications-updated", handler);
+    return () => window.removeEventListener("notifications-updated", handler);
+  }, [user]);
 
   // Load saved user email
   useEffect(() => {

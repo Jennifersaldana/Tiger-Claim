@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./found.css";
-import { addNotification } from "../notifications/notifications";
+import { addNotification, pushNotification } from "../notifications/notifications";
 
 const STORAGE_KEY = "foundItems.v1";
 
@@ -96,7 +96,7 @@ const ReportFoundItem = () => {
     setItems([newItem, ...items]);
     setMessage("Item saved locally!");
     const email = localStorage.getItem("lostAndFoundUser");
-    addNotification(email, `You reported a found item: ${itemName}`);
+    pushNotification(email, `You reported a found item: ${itemName}`);
 
     // Reset form
     setItemName("");

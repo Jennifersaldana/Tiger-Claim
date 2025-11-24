@@ -9,18 +9,25 @@ export function saveNotifications(email, list) {
   localStorage.setItem("notifications-" + email, JSON.stringify(list));
 }
 
-// Add a new notification
+// Only saves the notification
 export function addNotification(email, message) {
   const current = getNotifications(email);
   const newNotif = {
     id: Date.now(),
     message,
     seen: false,
-    createdAt: new Date().toISOString()
+    createdAt: new Date().toISOString(),
   };
   const updated = [newNotif, ...current];
   saveNotifications(email, updated);
 }
+
+// Adds the notification. Triggers the UI update event
+export function pushNotification(email, message) {
+  addNotification(email, message);
+  window.dispatchEvent(new Event("notifications-updated"));
+}
+
 
 // Mark a single notification as read
 export function markAsRead(email, id) {
