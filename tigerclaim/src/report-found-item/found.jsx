@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./found.css";
-import { addNotification, pushNotification } from "../notifications/notifications";
+import {pushNotification } from "../notifications/notifications";
 
 const STORAGE_KEY = "foundItems.v1";
 
-// Reusable LSU locations list
 const LSU_LOCATIONS = [
   "Patrick F. Taylor Hall",
   "Middleton Library",
@@ -115,10 +114,9 @@ const ReportFoundItem = () => {
 
   return (
     <div className="report-container">
-      <h1>Report Found Item</h1>
+      <h1>Report a Found Item</h1>
       <form onSubmit={handleSubmit}>
 
-        {/* Item Name */}
         <div className="form-group">
           <label htmlFor="itemName">Item Name:</label>
           <input
@@ -129,7 +127,6 @@ const ReportFoundItem = () => {
           />
         </div>
 
-        {/* Category */}
         <div className="form-group">
           <label>Category:</label>
           <select
@@ -149,7 +146,7 @@ const ReportFoundItem = () => {
             <option value="Jewelry">Jewelry</option>
             <option value="Other">Other</option>
           </select>
-          {/* Other for Category */}
+
           {category === "Other" && (
             <input
               type="text"
@@ -162,7 +159,6 @@ const ReportFoundItem = () => {
           )}
         </div>
 
-        {/* Date Found */}
         <div className="form-group">
           <label>Date Found:</label>
           <input
@@ -173,7 +169,6 @@ const ReportFoundItem = () => {
           />
         </div>
 
-        {/* Last Seen Location */}
         <div className="form-group">
           <label>Last Seen Location:</label>
           <select
@@ -187,7 +182,6 @@ const ReportFoundItem = () => {
             ))}
           </select>
 
-          {/* Other for Location */}
           {location === "Other" && (
             <input
               type="text"
@@ -200,7 +194,6 @@ const ReportFoundItem = () => {
           )}
         </div>
 
-        {/* Possession */}
         <div className="form-group radio-group">
           <label>Are you in possession of the item?</label>
           <div>
@@ -226,7 +219,6 @@ const ReportFoundItem = () => {
           </div>
         </div>
 
-        {/* Current item location */}
         <div className="form-group">
           <label>Where is the item currently?</label>
           <select
@@ -239,7 +231,6 @@ const ReportFoundItem = () => {
             ))}
           </select>
 
-          {/* Other for current location */}
           {currentLocation === "Other" && (
             <input
               type="text"
@@ -251,7 +242,6 @@ const ReportFoundItem = () => {
             />
           )}
 
-          {/* Room number */}
           {(currentLocation !== "" || currentOther !== "") && (
             <input
               type="text"
@@ -263,17 +253,16 @@ const ReportFoundItem = () => {
           )}
         </div>
 
-        {/* Description */}
         <div className="form-group">
           <label>Item Description:</label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
+            placeholder="Describe identifying marks, color, stickers, etc."
           />
         </div>
 
-        {/* Photo Upload */}
         <div className="form-group">
           <label>Upload Photo:</label>
           <input type="file" accept="image/*" onChange={handleImageUpload} />
@@ -291,7 +280,7 @@ const ReportFoundItem = () => {
           )}
         </div>
 
-        <button type="submit" className="submit-btn">Submit</button>
+        <button type="submit" className="submit-btn">Submit Found Item</button>
         {message && <p style={{ marginTop: "10px" }}>{message}</p>}
       </form>
     </div>

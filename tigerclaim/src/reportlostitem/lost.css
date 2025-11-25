@@ -1,25 +1,32 @@
 .lost-container {
-  width: 500px;
-  margin: 40px auto;
-  background: white;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+  background-color: white;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: var(--text-dark);
+  max-width: 700px;
+  margin: 0 auto; 
 }
 
 .lost-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
+  color: var(--lsu-purple);
+  margin-bottom: 24px;
+  border-bottom: 3px solid var(--lsu-gold);
+  padding-bottom: 8px;
 }
 
 .lost-form {
   display: flex;
   flex-direction: column;
+  gap: 18px;
+}
+
+.lost-form label {
+  font-weight: 600;
 }
 
 .lost-form input,
 .lost-form textarea {
-  margin-bottom: 15px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -27,19 +34,22 @@
 }
 
 .lost-form textarea {
-  height: 100px;
+  min-height: 90px;
+  resize: vertical;
 }
 
-.lost-form button {
-  padding: 12px;
-  background: purple;
-  color: white;
+.submit-btn {
+  background-color: var(--lsu-gold);
+  color: var(--text-dark);
+  font-weight: bold;
   border: none;
+  padding: 10px 18px;    
   border-radius: 6px;
-  font-size: 16px;
   cursor: pointer;
+  transition: 0.2s;
+  width: fit-content;  
 }
 
-.lost-form button:hover {
-  background: #5e0c85;
+.submit-btn:hover {
+  background-color: #e5be00;
 }

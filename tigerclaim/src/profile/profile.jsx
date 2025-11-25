@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import './profile.css';
 import defaultProfile from '../assets/profile.png';
-import { addNotification, pushNotification } from "../notifications/notifications"; 
+import { pushNotification } from "../notifications/notifications"; 
 
 function Profile({ onClose, onProfileUpdate }) {
   const [name, setName] = useState("");
