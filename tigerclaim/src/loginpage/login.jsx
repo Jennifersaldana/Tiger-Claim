@@ -14,33 +14,37 @@ const Login = ({ onLogin }) => {
     }
 
     localStorage.setItem("lostAndFoundUser", email);
-    onLogin(email);  
+    onLogin(email);
   };
 
   return (
-    <div className="login-container">
-      <div className="login-card">
-        <h1>Tiger Claim</h1>
-        <p>Enter your LSU email to continue</p>
+    <div className="login-fullscreen">
+      <img src="/tiger-claim-pic.jpeg" className="background-image" alt="Tiger Claim" />
 
-        <form onSubmit={handleSubmit} className="login-form">
-          <input
-            type="email"
-            placeholder="example@lsu.edu"
-            value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-              setError("");
-            }}
-            required
-          />
+      <div className="center-box">
+        <div className="login-card">
+          <h1>Tiger Claim</h1>
+          <p>Enter your LSU email to continue</p>
 
-          {error && <p className="error">{error}</p>}
+          <form onSubmit={handleSubmit} className="login-form">
+            <input
+              type="email"
+              placeholder="example@lsu.edu"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setError("");
+              }}
+              required
+            />
 
-          <button type="submit" className="login-btn">
-            Continue
-          </button>
-        </form>
+            {error && <p className="error">{error}</p>}
+
+            <button type="submit" className="login-btn">
+              Continue
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );
