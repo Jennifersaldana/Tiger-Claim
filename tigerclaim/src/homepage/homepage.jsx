@@ -16,8 +16,6 @@ const HomePage = ({ user }) => {
         </div>
 
       </div>
-
-      {/* Contact Section Added Here */}
       <div className="contact-section">
         <h2>Connect With Us</h2>
         <div className="contact-grid">
