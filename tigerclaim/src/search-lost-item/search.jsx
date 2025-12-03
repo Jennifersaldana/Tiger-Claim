@@ -22,15 +22,16 @@ const SearchLostItem = () => {
     setFilters({ ...filters, [name]: value });
   };
 
-
+  
   const sampleItems = [
     {
       id: "sample-1",
       name: "Water Bottle",
-      category: "Accessories",
-      location: "Tiger Stadium",
+      category: "Water Bottle",
+      location: "Student Union",
       date: "2025-11-05",
       description: "purple water bottle with black top and LSU on the bottle",
+      image: null,
       claimedBy: null,
       pendingClaim: null,
       ownerEmail: null,
@@ -38,10 +39,11 @@ const SearchLostItem = () => {
     {
       id: "sample-2",
       name: "Backpack",
-      category: "Clothing",
+      category: "Bag",
       location: "Middleton Library",
       date: "2025-11-05",
       description: "gold backpack with black straps and silver zippers",
+      image: null,
       claimedBy: null,
       pendingClaim: null,
       ownerEmail: null,
@@ -60,6 +62,7 @@ const SearchLostItem = () => {
       location: item.location,
       date: item.createdAt?.slice(0, 10),
       description: item.description || "No description provided",
+      image: item.image || null, 
       claimedBy: item.claimedBy || null,
       pendingClaim: item.pendingClaim || null,
       ownerEmail: item.ownerEmail || null,
@@ -73,6 +76,7 @@ const SearchLostItem = () => {
     const matchCategory = !filters.category || item.category === filters.category;
     const matchLocation = !filters.location || item.location === filters.location;
     const matchDate = !filters.date || item.date === filters.date;
+
     return matchCategory && matchLocation && matchDate;
   });
 
@@ -85,12 +89,7 @@ const SearchLostItem = () => {
       item.id === selectedItem.id
         ? {
             ...item,
-            pendingClaim: { 
-              userId, 
-              claimDescription, 
-              timestamp,
-              foundItemDescription: item.description 
-            },
+            pendingClaim: { userId, claimDescription, timestamp },
           }
         : item
     );
@@ -105,15 +104,18 @@ const SearchLostItem = () => {
     const newClaim = {
       id: Date.now(),
       itemId: selectedItem.id,
-      userId,
+      userId: userId,
       userDescription: claimDescription,
-      foundItemDescription: selectedItem.description,
-      timestamp,
+      lostItemDescription: null,
+      timestamp: timestamp,
       status: "pending",
+      image: selectedItem.image || null, 
+      itemDescription: selectedItem.description,
+      itemFoundLocation: selectedItem.location,
+      itemDate: selectedItem.date,
     };
 
-    const updatedClaims = [...existingClaims, newClaim];
-    localStorage.setItem("claims", JSON.stringify(updatedClaims));
+    localStorage.setItem("claims", JSON.stringify([...existingClaims, newClaim]));
 
     setSelectedItem(null);
     setClaimDescription("");
@@ -149,14 +151,16 @@ const SearchLostItem = () => {
   };
 
   
-  const adminPending = items.filter((i) => i.pendingClaim);
+  const adminPending = items.filter(
+    (i) => i.pendingClaim && i.ownerEmail !== ADMIN_EMAIL
+  );
 
-
+  
   return (
     <div className="search-container">
       <h2 className="search-title">Search Lost Items</h2>
 
-      {/* ADMIN PANEL */}
+      {/* ------------------ ADMIN PANEL ------------------ */}
       {loggedInUser === ADMIN_EMAIL && (
         <div className="admin-panel">
           <h3>Pending Claims</h3>
@@ -167,15 +171,17 @@ const SearchLostItem = () => {
             adminPending.map((item) => (
               <div key={item.id} className="admin-claim-card">
                 <h4>{item.name}</h4>
+
+                {item.image && (
+                  <img src={item.image} alt="item" className="admin-item-image" />
+                )}
+
                 <p><strong>Found At:</strong> {item.location}</p>
                 <p><strong>Date Found:</strong> {item.date}</p>
-                <p><strong>Found Item Description:</strong> {item.description}</p>
+                <p><strong>Found Description:</strong> {item.description}</p>
 
-                <hr />
-
-                <p><strong>User Description:</strong> {item.pendingClaim.claimDescription}</p>
+                <p><strong>User Claim Description:</strong> {item.pendingClaim.claimDescription}</p>
                 <p><strong>User ID:</strong> {item.pendingClaim.userId}</p>
-                <p><strong>Timestamp:</strong> {new Date(item.pendingClaim.timestamp).toLocaleString()}</p>
 
                 <div className="admin-actions">
                   <button className="approve-btn" onClick={() => approveClaim(item.id)}>
@@ -191,7 +197,7 @@ const SearchLostItem = () => {
         </div>
       )}
 
-      {/* USER FILTERS */}
+      {/* ------------------ FILTERS ------------------ */}
       <div className="filters">
         <div className="filter-group">
           <label>Category:</label>
@@ -217,6 +223,23 @@ const SearchLostItem = () => {
             <option value="Patrick F. Taylor Hall">Patrick F. Taylor Hall</option>
             <option value="Middleton Library">Middleton Library</option>
             <option value="Student Union">Student Union</option>
+            <option value="Lockett Hall">Locket Hall</option>
+            <option value="Choppin Hall">Choppin Hall</option>
+            <option value="Business Education Complex"> Business Education Complex</option>
+            <option value="French House">French House</option>
+            <option value="Manship School">Manship School</option>
+            <option value="Cox Communications Academic Center"> Cox Communications Academic Center</option>
+            <option value="Hatcher Hall">Hatcher Hall</option>
+            <option value="Music & Dramatic Arts Building"> Music & Dramatic Arts Buildin</option>
+            <option value="Art & Design Complex">Art & Design Complex</option>
+            <option value="Tureaud Hall">Tureaud Hall</option>
+            <option value="Campus Recreation">Campus Recreation</option>
+            <option value="Barnes & Noble (Bookstore)">Barnes & Noble (Bookstore)</option>
+            <option value="The Quad">The Quad</option>
+            <option value="Tiger Stadium">Tiger Stadium</option>
+            <option value="Pete Maravich Assembly Center"> Pete Maravich Assembly Center</option>
+            <option value="Other">Other</option>
+
           </select>
         </div>
 
@@ -226,11 +249,18 @@ const SearchLostItem = () => {
         </div>
       </div>
 
-      {/* ITEMS GRID */}
+      {/* ------------------ ITEMS GRID ------------------ */}
       <div className="items-grid">
         {filteredItems.map((item) => (
           <div key={item.id} className="item-card">
-            <div className="item-image placeholder">Image Not Available</div>
+            
+            <div className="item-image">
+              {item.image ? (
+                <img src={item.image} alt="item" />
+              ) : (
+                <div className="placeholder">No Image</div>
+              )}
+            </div>
 
             <h3>{item.name}</h3>
             <p><strong>Category:</strong> {item.category}</p>
@@ -252,11 +282,12 @@ const SearchLostItem = () => {
         ))}
       </div>
 
-      {/* CLAIM MODAL */}
+      {/* ------------------ CLAIM MODAL ------------------ */}
       {selectedItem && (
         <div className="modal-overlay">
           <div className="modal">
             <h3>Claim: {selectedItem.name}</h3>
+
             <p>Please describe your item:</p>
 
             <textarea
@@ -266,8 +297,8 @@ const SearchLostItem = () => {
             />
 
             <div className="modal-buttons">
-              <button className="submit-btn" onClick={submitClaim}>Submit Claim</button>
-              <button className="cancel-btn" onClick={() => setSelectedItem(null)}>Cancel</button>
+              <button onClick={submitClaim}>Submit Claim</button>
+              <button onClick={() => setSelectedItem(null)}>Cancel</button>
             </div>
           </div>
         </div>

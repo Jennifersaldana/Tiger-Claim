@@ -3,19 +3,17 @@ import "./admin.css";
 
 const AdminPanel = () => {
   const [claims, setClaims] = useState([]);
-  const [items, setItems] = useState([]);
+  const [userItems, setUserItems] = useState([]);
+  const [sampleItems, setSampleItems] = useState([]);
 
   useEffect(() => {
     const storedClaims = JSON.parse(localStorage.getItem("claims")) || [];
-
-    // Load sample + user items
-    const sampleItems = JSON.parse(localStorage.getItem("foundItems.v1")) || [];
-    const userItems = JSON.parse(localStorage.getItem("foundItems.user")) || [];
-
-    const allItems = [...sampleItems, ...userItems];
+    const storedUserItems = JSON.parse(localStorage.getItem("foundItems.v1")) || [];
+    const storedSampleItems = JSON.parse(localStorage.getItem("sampleItems")) || [];
 
     setClaims(storedClaims);
-    setItems(allItems);
+    setUserItems(storedUserItems);
+    setSampleItems(storedSampleItems);
   }, []);
 
   const updateClaimStatus = (claimId, status) => {
@@ -28,12 +26,16 @@ const AdminPanel = () => {
   };
 
   const getItemDetails = (itemId) => {
-    return items.find((item) => item.id === itemId);
+
+    return (
+      userItems.find((item) => item.id === itemId) ||
+      sampleItems.find((item) => item.id === itemId)
+    );
   };
 
   return (
     <div className="admin-container">
-      <h2 className="admin-title">Admin Claim Management</h2>
+      <h2 className="admin-title">Pending Claims</h2>
 
       {claims.length === 0 ? (
         <p className="no-claims">No claim requests submitted.</p>
@@ -42,37 +44,37 @@ const AdminPanel = () => {
           {claims.map((claim) => {
             const item = getItemDetails(claim.itemId);
 
-            // Apply a special CSS class ONLY if the claim is "pending"
-            const cardClass =
-              claim.status === "pending"
-                ? "claim-card claim-pending"
-                : "claim-card";
-
             return (
-              <div key={claim.id} className={cardClass}>
-                <h3>Claim Request #{claim.id}</h3>
+              <div key={claim.id} className="claim-card">
+                <h3 className="claim-header">Claim Request #{claim.id}</h3>
 
                 <p><strong>Status:</strong> {claim.status}</p>
-                <p><strong>User Description:</strong> {claim.userDescription}</p>
+                <p><strong>Claim Submitted:</strong> {new Date(claim.timestamp).toLocaleString()}</p>
+
+                <p><strong>User’s Lost Item Description:</strong></p>
+                <p className="description-box">{claim.userDescription}</p>
 
                 {item ? (
                   <>
-                    <p><strong>Item Found:</strong> {item.name}</p>
-                    <p><strong>Actual Description:</strong> {item.description}</p>
-                    <p><strong>Location Found:</strong> {item.location}</p>
-                    <p><strong>Date Found:</strong> {item.date}</p>
-
                     {item.image && (
                       <img
                         src={item.image}
-                        alt={item.name}
+                        alt="Found Item"
                         className="admin-item-image"
                       />
                     )}
+
+                    <p><strong>Found Item Name:</strong> {item.name}</p>
+
+                    <p><strong>Found Item Description:</strong></p>
+                    <p className="description-box">{item.description}</p>
+
+                    <p><strong>Location Found:</strong> {item.location}</p>
+                    <p><strong>Date Found:</strong> {item.date}</p>
                   </>
                 ) : (
                   <p className="missing-item-warning">
-                    ⚠ The referenced item could not be found.
+                    ⚠ Item no longer exists in the system.
                   </p>
                 )}
 

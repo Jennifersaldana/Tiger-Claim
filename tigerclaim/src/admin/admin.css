@@ -1,92 +1,84 @@
 .admin-container {
-    background-color: white;
-    border-radius: 8px;
-    padding: 30px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    color: var(--text-dark);
-    max-width: 900px;
-    margin: 0 auto;
-  }
-  
-  .admin-container h2 {
-    color: var(--lsu-purple);
-    margin-bottom: 24px;
-    border-bottom: 3px solid var(--lsu-gold);
-    padding-bottom: 8px;
-  }
-  
-  .empty-message {
-    font-size: 16px;
-    color: #666;
-    margin-top: 15px;
-  }
-  
-  .claims-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-  
-  .claim-card {
-    background: #fafafa;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-  }
-  
-  .claim-card h3 {
-    color: var(--lsu-purple);
-    margin-bottom: 10px;
-  }
-  
-  .decision-buttons {
-    margin-top: 15px;
-    display: flex;
-    gap: 12px;
-  }
-  
-  .approve-btn,
-  .deny-btn {
-    padding: 10px 16px;
-    border-radius: 6px;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-    transition: 0.2s;
-  }
-  
-  .approve-btn {
-    background-color: var(--lsu-gold);
-    color: var(--text-dark);
-  }
-  
-  .approve-btn:hover {
-    background-color: #e5be00;
-  }
-  
-  .deny-btn {
-    background-color: #d9534f;
-    color: white;
-  }
-  
-  .deny-btn:hover {
-    background-color: #c9302c;
-  }
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+}
 
-  .claim-pending {
-    border: 2px solid #f7c948;     
-    background-color: #fff9e6;     
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-  }
-  
-  .claim-card {
-    background: white;
-    padding: 15px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-  }
-  
-  
+.admin-title {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.claim-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.claim-card {
+  border: 2px solid #e0e0e0;
+  padding: 20px;
+  border-radius: 12px;
+  background: #fafafa;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.claim-header {
+  margin-bottom: 10px;
+  font-size: 20px;
+}
+
+.description-box {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
+.admin-item-image {
+  width: 200px;
+  height: auto;
+  border-radius: 8px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+}
+
+.admin-actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 15px;
+}
+
+.approve-btn {
+  background: #4caf50;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.approve-btn:hover {
+  background: #449d48;
+}
+
+.deny-btn {
+  background: #e53935;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.deny-btn:hover {
+  background: #c62828;
+}
+
+.missing-item-warning {
+  color: #d32f2f;
+  font-weight: bold;
+}
