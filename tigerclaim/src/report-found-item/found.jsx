@@ -89,6 +89,7 @@ const ReportFoundItem = () => {
       roomNumber,
       description,
       photo,
+      ownerEmail: localStorage.getItem("lostAndFoundUser"),
       createdAt: new Date().toISOString(),
     };
 
