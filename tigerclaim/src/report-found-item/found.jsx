@@ -98,7 +98,6 @@ const ReportFoundItem = () => {
     const email = localStorage.getItem("lostAndFoundUser");
     pushNotification(email, `You reported a found item: ${itemName}`);
 
-    // Reset form
     setItemName("");
     setCategory("");
     setCategoryOther("");

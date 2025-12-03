@@ -22,9 +22,7 @@ const SearchLostItem = () => {
     setFilters({ ...filters, [name]: value });
   };
 
-  // ----------------------------
-  // SAMPLE ITEMS
-  // ----------------------------
+
   const sampleItems = [
     {
       id: "sample-1",
@@ -50,9 +48,7 @@ const SearchLostItem = () => {
     },
   ];
 
-  // ----------------------------
-  // LOAD ITEMS (SAMPLE + STORED)
-  // ----------------------------
+  
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     let storedItems = saved ? JSON.parse(saved) : [];
@@ -69,13 +65,10 @@ const SearchLostItem = () => {
       ownerEmail: item.ownerEmail || null,
     }));
 
-    // Merge sample + stored, ALWAYS show samples
     setItems([...sampleItems, ...storedItems]);
   }, []);
 
-  // ----------------------------
-  // FILTER ITEMS
-  // ----------------------------
+  
   const filteredItems = items.filter((item) => {
     const matchCategory = !filters.category || item.category === filters.category;
     const matchLocation = !filters.location || item.location === filters.location;
@@ -83,9 +76,7 @@ const SearchLostItem = () => {
     return matchCategory && matchLocation && matchDate;
   });
 
-  // ----------------------------
-  // SUBMIT CLAIM
-  // ----------------------------
+  
   const submitClaim = () => {
     const userId = loggedInUser;
     const timestamp = Date.now();
@@ -128,9 +119,7 @@ const SearchLostItem = () => {
     setClaimDescription("");
   };
 
-  // ----------------------------
-  // ADMIN APPROVE / DENY
-  // ----------------------------
+  
   const approveClaim = (itemId) => {
     const updated = items.map((item) =>
       item.id === itemId
@@ -159,15 +148,10 @@ const SearchLostItem = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(localOnly));
   };
 
-  // ----------------------------
-  // ADMIN PENDING CLAIM VIEW
-  // Now includes sample-item claims too
-  // ----------------------------
+  
   const adminPending = items.filter((i) => i.pendingClaim);
 
-  // ----------------------------
-  // UI STARTS HERE
-  // ----------------------------
+
   return (
     <div className="search-container">
       <h2 className="search-title">Search Lost Items</h2>
