@@ -19,7 +19,7 @@ const Login = ({ onLogin }) => {
 
   return (
     <div className="login-fullscreen">
-      <img src="/abstract-tiger.png" className="background-image" alt="Tiger Claim" />
+      <img src="/tiger-claim-pic.jpeg" className="background-image" alt="Tiger Claim" />
 
       <div className="center-box">
         <div className="login-card">
