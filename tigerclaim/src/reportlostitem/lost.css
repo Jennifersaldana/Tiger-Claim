@@ -5,7 +5,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   color: var(--text-dark);
   max-width: 700px;
-  margin: 0 auto; 
+  margin: 0 auto;
 }
 
 .lost-container h2 {
@@ -26,11 +26,28 @@
 }
 
 .lost-form input,
+.lost-form select,
 .lost-form textarea {
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 2px solid var(--lsu-purple); 
   border-radius: 6px;
   font-size: 15px;
+  background-color: #faf8ff; 
+}
+
+.lost-form input:focus,
+.lost-form select:focus,
+.lost-form textarea:focus {
+  outline: none;
+  border-color: #4b1a82; 
+  box-shadow: 0 0 6px rgba(75, 26, 130, 0.7);
+  background-color: white;
+}
+
+.lost-form input:hover,
+.lost-form select:hover,
+.lost-form textarea:hover {
+  border-color: #5e27a9;
 }
 
 .lost-form textarea {
@@ -43,11 +60,11 @@
   color: var(--text-dark);
   font-weight: bold;
   border: none;
-  padding: 10px 18px;    
+  padding: 10px 18px;
   border-radius: 6px;
   cursor: pointer;
   transition: 0.2s;
-  width: fit-content;  
+  width: fit-content;
 }
 
 .submit-btn:hover {

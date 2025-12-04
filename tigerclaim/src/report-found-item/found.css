@@ -24,10 +24,40 @@ label {
   margin-bottom: 6px;
 }
 
-input, select, textarea {
+input:not([type="file"]),
+select,
+textarea {
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 2px solid var(--lsu-purple); 
   border-radius: 6px;
+  font-size: 15px;
+  background-color: #faf8ff; 
+}
+
+input:not([type="file"]):hover,
+select:hover,
+textarea:hover {
+  border-color: #5e27a9;
+}
+
+input:not([type="file"]):focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #4b1a82;
+  box-shadow: 0 0 6px rgba(75, 26, 130, 0.7);
+  background-color: white;
+}
+
+textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+input[type="file"] {
+  padding: 6px 0;
+  border: none; 
+  background: none;
 }
 
 .submit-btn {
