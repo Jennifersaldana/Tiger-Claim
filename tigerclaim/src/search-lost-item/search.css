@@ -64,7 +64,7 @@
 
   .claim-btn {
     background-color: var(--lsu-gold);
-    color: var(--text-dark);
+    color: var(--lsu-purple);
     border: none;
     padding: 8px 12px;
     border-radius: 6px;
@@ -78,17 +78,22 @@
     background-color: #e5b800;
   }
 
-  /* --- Modal Buttons (Match LSU Styling) --- */
 
 .modal-buttons {
   display: flex;
   gap: 12px;
   margin-top: 15px;
 }
+.modal h3{
+    display: block;
+    font-weight: bold;
+    color: var(--lsu-purple);
+    margin-bottom: 5px;
+}
 
 .modal-buttons button {
   background-color: var(--lsu-gold);
-  color: var(--text-dark);
+  color: var(--lsu-purple);
   border: none;
   padding: 8px 14px;
   border-radius: 6px;
@@ -112,8 +117,8 @@
 .modal textarea {
   width: 100%;
   min-height: 90px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
+  border-radius: 10px;
+  border: 2px solid var(--lsu-purple);
   padding: 10px;
   font-size: 15px;
   resize: vertical;

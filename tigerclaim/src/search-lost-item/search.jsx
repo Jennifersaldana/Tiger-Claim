@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./search.css";
+import {pushNotification } from "../notifications/notifications";
 
 const STORAGE_KEY = "foundItems.v1";
 const ADMIN_EMAIL = "admin@lsu.edu";
@@ -116,6 +117,11 @@ const SearchLostItem = () => {
     };
 
     localStorage.setItem("claims", JSON.stringify([...existingClaims, newClaim]));
+
+    pushNotification(
+      userId,
+      `You have claimed: ${selectedItem.name}. Your request is now under review for verification.`
+    );
 
     setSelectedItem(null);
     setClaimDescription("");

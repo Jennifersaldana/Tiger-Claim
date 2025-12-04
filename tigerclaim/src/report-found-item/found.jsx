@@ -94,7 +94,7 @@ const ReportFoundItem = () => {
     };
 
     setItems([newItem, ...items]);
-    setMessage("Item saved locally!");
+    setMessage("Item was submitted! Thank you for your contribution.");
     const email = localStorage.getItem("lostAndFoundUser");
     pushNotification(email, `You reported a found item: ${itemName}`);
 
