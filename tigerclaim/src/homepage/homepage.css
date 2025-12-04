@@ -91,9 +91,9 @@
 }
 
 .map-wrapper {
-  margin: 50px auto 60px auto; /* spacing above + below */
+  margin: 50px auto 60px auto; 
   width: 95%;
-  max-width: 1200px; /* bigger map size */
+  max-width: 1200px; 
   background: white;
   padding: 20px;
   border-radius: 20px;
@@ -102,23 +102,23 @@
 
 .map-wrapper iframe {
   width: 100%;
-  height: 650px; /* increased height */
+  height: 650px; 
   border: none;
   border-radius: 14px;
 }
 
-/* Contact Section */
 .contact-section {
 padding: 30px;
 border-radius: 16px;
 margin-bottom: 40px;
-text-align: center;
+text-align: left;
 }
 
 .contact-section h2 {
 color: var(--lsu-purple);
 font-size: 2rem;
 margin-bottom: 10px;
+text-align: center;
 }
 
 .contact-section p {

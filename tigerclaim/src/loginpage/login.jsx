@@ -19,11 +19,11 @@ const Login = ({ onLogin }) => {
 
   return (
     <div className="login-fullscreen">
-      <img src="/tiger-claim-pic.jpeg" className="background-image" alt="Tiger Claim" />
+      <img src="/abstract-tiger.png" className="background-image" alt="Tiger Claim" />
 
       <div className="center-box">
         <div className="login-card">
-          <h1>Tiger Claim</h1>
+          <h1>Login In</h1>
           <p>Enter your LSU email to continue</p>
 
           <form onSubmit={handleSubmit} className="login-form">

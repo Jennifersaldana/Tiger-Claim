@@ -16,23 +16,6 @@ const HomePage = ({ user }) => {
         </div>
 
       </div>
-      <div className="contact-section">
-        <h2>Connect With Us</h2>
-        <div className="contact-grid">
-          <div className="contact-card">
-            <h3>Email</h3>
-            <p>support@tigerclaim.lsu.edu</p>
-          </div>
-          <div className="contact-card">
-            <h3>Phone</h3>
-            <p>(225) 555-1234</p>
-          </div>
-          <div className="contact-card">
-            <h3>Visit Us</h3>
-            <p>Student Union - Lost & Found Desk</p>
-          </div>
-        </div>
-      </div>
 
       <div className="feature-section">
         <h2>How Tiger Claim Works</h2>
@@ -64,6 +47,24 @@ const HomePage = ({ user }) => {
           allowFullScreen
           loading="lazy"
         ></iframe>
+      </div>
+
+          <div className="contact-section">
+        <h2>Connect With Us</h2>
+        <div className="contact-grid">
+          <div className="contact-card">
+            <h3>Email</h3>
+            <p>support@tigerclaim.lsu.edu</p>
+          </div>
+          <div className="contact-card">
+            <h3>Phone</h3>
+            <p>(225) 555-1234</p>
+          </div>
+          <div className="contact-card">
+            <h3>Visit Us</h3>
+            <p>Student Union - Lost & Found Desk</p>
+          </div>
+        </div>
       </div>
 
     </div>
