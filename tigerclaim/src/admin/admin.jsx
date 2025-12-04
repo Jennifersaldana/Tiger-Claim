@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./admin.css";
+import {pushNotification } from "../notifications/notifications";
 
 const AdminPanel = () => {
   const [claims, setClaims] = useState([]);
