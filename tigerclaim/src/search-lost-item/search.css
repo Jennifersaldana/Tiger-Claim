@@ -9,7 +9,10 @@
     color: var(--lsu-purple);
     font-size: 1.8rem;
     margin-bottom: 20px;
-  }
+    border-bottom: 3px solid var(--lsu-gold);
+    padding-bottom: 8px;
+}
+
   
   .filters {
     display: flex;
@@ -74,4 +77,46 @@
   .claim-btn:hover {
     background-color: #e5b800;
   }
+
+  /* --- Modal Buttons (Match LSU Styling) --- */
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.modal-buttons button {
+  background-color: var(--lsu-gold);
+  color: var(--text-dark);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s ease-in-out;
+}
+
+.modal-buttons button:hover {
+  background-color: #e5b800;
+}
+
+.modal-buttons button:last-child {
+  background-color: #cccccc;
+}
+
+.modal-buttons button:last-child:hover {
+  background-color: #b8b8b8;
+}
+
+.modal textarea {
+  width: 100%;
+  min-height: 90px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 15px;
+  resize: vertical;
+}
+
   

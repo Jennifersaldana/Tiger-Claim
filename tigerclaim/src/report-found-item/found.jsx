@@ -89,6 +89,7 @@ const ReportFoundItem = () => {
       roomNumber,
       description,
       photo,
+      ownerEmail: localStorage.getItem("lostAndFoundUser"),
       createdAt: new Date().toISOString(),
     };
 
@@ -97,7 +98,6 @@ const ReportFoundItem = () => {
     const email = localStorage.getItem("lostAndFoundUser");
     pushNotification(email, `You reported a found item: ${itemName}`);
 
-    // Reset form
     setItemName("");
     setCategory("");
     setCategoryOther("");
