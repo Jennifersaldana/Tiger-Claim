@@ -18,7 +18,7 @@ const NotificationsDropdown = ({ user, onClose }) => {
       localStorage.setItem("editReportMeta", JSON.stringify(meta));
 
       // Navigate to the combined report page
-      window.location.href = "/report";
+      window.dispatchEvent(new CustomEvent("nav", { detail: "report" }));
     }
 
     markAsRead(user, notif.id);
