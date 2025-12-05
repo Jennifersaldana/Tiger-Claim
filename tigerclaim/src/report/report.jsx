@@ -575,6 +575,7 @@ const ReportPage = () => {
               value={lostDetails}
               onChange={(e) => setLostDetails(e.target.value)}
               placeholder="Describe identifying marks, color, stickers, etc."
+              maxLength={250} 
               required
             />
 
@@ -745,6 +746,7 @@ const ReportPage = () => {
               onChange={(e) => setFoundDescription(e.target.value)}
               required
               placeholder="Describe identifying marks, color, stickers, etc."
+              maxLength={250} 
             />
 
             <label>Upload Photo:</label>

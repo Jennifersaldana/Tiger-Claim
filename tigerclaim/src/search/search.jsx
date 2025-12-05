@@ -265,6 +265,7 @@ const SearchLostItem = () => {
               placeholder="Describe details for verification..."
               value={claimDescription}
               onChange={(e) => setClaimDescription(e.target.value)}
+              maxLength={250} 
               required
             />
 
