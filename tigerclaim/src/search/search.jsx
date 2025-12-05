@@ -194,7 +194,7 @@ const SearchLostItem = () => {
         {activeFound.map((item) => (
           <div key={item.id} className="item-card">
             <div className="item-image">
-              {item.image ? <img src={item.image} alt="" /> : <div className="placeholder">No Image</div>}
+              <div className="placeholder">Image Hidden</div>
             </div>
             <h3>{item.name}</h3>
             <p><strong>Category:</strong> {item.category}</p>
@@ -220,7 +220,7 @@ const SearchLostItem = () => {
         {activeLost.map((item) => (
           <div key={item.id} className="item-card">
             <div className="item-image">
-              {item.image ? <img src={item.image} alt="" /> : <div className="placeholder">No Image</div>}
+              <div className="placeholder">Image Hidden</div>
             </div>
             <h3>{item.name}</h3>
             <p><strong>Category:</strong> {item.category}</p>
@@ -246,7 +246,7 @@ const SearchLostItem = () => {
         {[...resolvedFound, ...resolvedLost].map((item) => (
           <div key={item.id} className="item-card resolved-card">
             <div className="item-image">
-              {item.image ? <img src={item.image} alt="" /> : <div className="placeholder">No Image</div>}
+              <div className="placeholder">Image Hidden</div>
             </div>
             <h3>{item.name}</h3>
             <p><strong>Location:</strong> {item.location}</p>
@@ -265,6 +265,7 @@ const SearchLostItem = () => {
               placeholder="Describe details for verification..."
               value={claimDescription}
               onChange={(e) => setClaimDescription(e.target.value)}
+              required
             />
 
             <div className="modal-buttons">

@@ -578,8 +578,10 @@ const ReportPage = () => {
               required
             />
 
-            <label>Upload Photo (optional):</label>
-            <input type="file" accept="image/*" onChange={handleLostPhotoUpload} />
+            <label>Upload Photo:</label>
+            <input type="file" accept="image/*" onChange={handleLostPhotoUpload} 
+              required
+            />
             {lostPhoto && (
               <img
                 src={lostPhoto}
@@ -612,6 +614,7 @@ const ReportPage = () => {
               type="text"
               value={foundItemName}
               onChange={(e) => setFoundItemName(e.target.value)}
+              placeholder="AirPods, laptop, wallet…"
               required
             />
 
@@ -705,6 +708,7 @@ const ReportPage = () => {
             <select
               value={foundCurrentLocation}
               onChange={(e) => setFoundCurrentLocation(e.target.value)}
+              required
             >
               <option value="">Select</option>
               {LSU_LOCATIONS.map((loc) => (
@@ -744,7 +748,9 @@ const ReportPage = () => {
             />
 
             <label>Upload Photo:</label>
-            <input type="file" accept="image/*" onChange={handleFoundPhotoUpload} />
+            <input type="file" accept="image/*" onChange={handleFoundPhotoUpload} 
+              required
+            />
             {foundPhoto && (
               <img
                 src={foundPhoto}
