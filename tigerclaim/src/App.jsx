@@ -3,18 +3,15 @@ import "./App.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBell } from "@fortawesome/free-solid-svg-icons";
 
-// Pages
-import ReportFoundItem from "./report-found-item/found";
-import SearchLostItem from "./search-lost-item/search";
+import ReportPage from "./report/report";
+import SearchLostItem from "./search/search";
 import HomePage from "./homepage/homepage";
 import Login from "./loginpage/login";
-import Profile from "./profile/profile"; 
-import ReportLostItem from "./reportlostitem/lost";  // <-- KEEP THIS
+import Profile from "./profile/profile";
+import AdminPanel from "./admin/admin"
 
-// Assets
 import defaultProfile from "./assets/profile.png";
 
-// Notifications
 import NotificationsDropdown from "../src/notifications/notification";
 import { unreadCount } from "../src/notifications/notifications";
 
@@ -22,25 +19,25 @@ const App = () => {
   const [activePage, setActivePage] = useState("home");
   const [user, setUser] = useState("");
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+
   const [profilePhoto, setProfilePhoto] = useState(defaultProfile);
   const [profileName, setProfileName] = useState("");
   const [profilePhone, setProfilePhone] = useState("");
+
   const [notifCount, setNotifCount] = useState(0);
   const [showNotif, setShowNotif] = useState(false);
-  
+
   useEffect(() => {
     const handler = () => setNotifCount(unreadCount(user));
     window.addEventListener("notifications-updated", handler);
     return () => window.removeEventListener("notifications-updated", handler);
   }, [user]);
 
-  // Load saved user email
   useEffect(() => {
     const savedUser = localStorage.getItem("lostAndFoundUser");
     if (savedUser) setUser(savedUser);
   }, []);
 
-  // Load saved profile for current user
   useEffect(() => {
     if (!user) return;
 
@@ -52,26 +49,22 @@ const App = () => {
     setProfilePhone(profile.phone || "");
   }, [user]);
 
-  // Load unread notifications
   useEffect(() => {
     if (user) setNotifCount(unreadCount(user));
   }, [user]);
 
-  // Navigation listener
   useEffect(() => {
     const handler = (e) => setActivePage(e.detail);
     window.addEventListener("nav", handler);
     return () => window.removeEventListener("nav", handler);
   }, []);
 
-  // If not logged in → login page
   if (!user) {
     return <Login onLogin={setUser} />;
   }
 
   return (
     <div className="app-container">
-      {/* HEADER */}
       <header className="lsu-header">
         <div className="header-content">
           <img src="/paw.png" alt="LSU Logo" className="lsu-logo" />
@@ -79,18 +72,14 @@ const App = () => {
         </div>
 
         <div className="top-right-icons">
-
-          {/* NOTIFICATIONS */}
           <div
             className="notification-icon"
             onClick={() => setShowNotif(!showNotif)}
           >
             <FontAwesomeIcon icon={faBell} className="bell-icon" />
             {notifCount > 0 && <span className="notif-badge"></span>}
-
           </div>
 
-          {/* PROFILE ICON */}
           <img
             src={profilePhoto}
             alt="Profile"
@@ -110,7 +99,6 @@ const App = () => {
         </div>
       </header>
 
-      {/* PROFILE MODAL */}
       {isProfileOpen && (
         <Profile
           onClose={() => setIsProfileOpen(false)}
@@ -122,7 +110,6 @@ const App = () => {
         />
       )}
 
-      {/* LAYOUT */}
       <div className="main-layout">
         <aside className="sidebar">
           <ul>
@@ -130,39 +117,37 @@ const App = () => {
               className={activePage === "home" ? "active" : ""}
               onClick={() => setActivePage("home")}
             >
-               {/*<img src="/home.png" alt="Home" className="sidebar-icon" /> */}
               Welcome
             </li>
 
+            {user === "admin@lsu.edu" && (
+            <li
+              className={activePage === "admin" ? "active" : ""}
+              onClick={() => setActivePage("admin")}
+            >
+              Admin Panel
+            </li>
+          )}
 
 
             <li
               className={activePage === "search" ? "active" : ""}
               onClick={() => setActivePage("search")}
             >
-              Search Found Items
-            </li>
-
-            {/* REPORT LOST ITEM — ADDED BACK */}
-            <li
-              className={activePage === "reportlost" ? "active" : ""}
-              onClick={() => setActivePage("reportlost")}
-            >
-              Report Lost Item
+              Search Lost & Found
             </li>
 
             <li
               className={activePage === "report" ? "active" : ""}
               onClick={() => setActivePage("report")}
             >
-              Report Found Item
+              Report Lost / Found
             </li>
 
-
             <li
-              className="logout-btn"
-              onClick={() => {
-                if (window.confirm("Are you sure you want to log out?")) {
+              className="logout-btn" 
+                  onClick={() => {
+                  if (window.confirm("Are you sure you want to log out?")) {
                   localStorage.removeItem("lostAndFoundUser");
                   setUser("");
                   setActivePage("home");
@@ -179,9 +164,9 @@ const App = () => {
 
         <main className="main-content">
           {activePage === "home" && <HomePage user={user} />}
-          {activePage === "report" && <ReportFoundItem />}
+          {activePage === "admin" && user === "admin@lsu.edu" && <AdminPanel />}
           {activePage === "search" && <SearchLostItem />}
-          {activePage === "reportlost" && <ReportLostItem />} {/* KEEP */}
+          {activePage === "report" && <ReportPage />}
         </main>
       </div>
 

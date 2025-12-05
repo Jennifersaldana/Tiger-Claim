@@ -1,15 +1,27 @@
 import React from "react";
 import {
   getNotifications,
-  markAsRead
+  markAsRead,
 } from "./notifications.js";
 import "./notification.css";
 
 const NotificationsDropdown = ({ user, onClose }) => {
   const list = getNotifications(user);
 
-  const handleRead = (id) => {
-    markAsRead(user, id);
+  const handleRead = (notif) => {
+    // If this notification is about editing a report, set metadata
+    if (notif.data && notif.data.type === "edit-report") {
+      const meta = {
+        reportType: notif.data.reportType, // "lost" | "found"
+        reportId: notif.data.reportId,
+      };
+      localStorage.setItem("editReportMeta", JSON.stringify(meta));
+
+      // Navigate to the combined report page
+      window.location.href = "/report";
+    }
+
+    markAsRead(user, notif.id);
     onClose(); // close dropdown after clicking
   };
 
@@ -22,11 +34,11 @@ const NotificationsDropdown = ({ user, onClose }) => {
         <p className="notif-empty">No notifications</p>
       )}
 
-      {list.map(n => (
+      {list.map((n) => (
         <div
           key={n.id}
           className={`notif-item ${n.seen ? "seen" : ""}`}
-          onClick={() => handleRead(n.id)}
+          onClick={() => handleRead(n)}
         >
           <span>{n.message}</span>
         </div>

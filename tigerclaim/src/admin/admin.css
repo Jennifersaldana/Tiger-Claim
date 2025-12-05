@@ -1,14 +1,19 @@
 .admin-container {
   max-width: 900px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 30px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.15);
 }
 
 .admin-title {
   font-size: 28px;
   font-weight: bold;
-  margin-bottom: 20px;
-  text-align: center;
+  color: var(--lsu-purple);
+  border-bottom: 3px solid var(--lsu-gold);
+  padding-bottom: 8px;
+  margin-bottom: 25px;
 }
 
 .claim-list {
@@ -18,67 +23,88 @@
 }
 
 .claim-card {
-  border: 2px solid #e0e0e0;
+  border: 2px solid var(--lsu-purple);
+  background: #faf8ff;
   padding: 20px;
-  border-radius: 12px;
-  background: #fafafa;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  border-radius: 10px;
 }
 
 .claim-header {
-  margin-bottom: 10px;
   font-size: 20px;
+  font-weight: bold;
+  color: var(--lsu-purple);
+  margin-bottom: 10px;
 }
 
 .description-box {
   background: white;
-  border: 1px solid #ccc;
-  padding: 10px;
+  padding: 12px;
   border-radius: 6px;
-  margin-bottom: 10px;
+  border: 1px solid var(--lsu-purple);
+  margin-bottom: 15px;
 }
 
 .admin-item-image {
-  width: 200px;
-  height: auto;
+  width: 140px;
   border-radius: 8px;
-  margin: 10px 0;
   border: 1px solid #ccc;
+  margin-top: 10px;
 }
 
 .admin-actions {
-  margin-top: 15px;
   display: flex;
-  gap: 15px;
+  gap: 12px;
+  margin-top: 10px;
 }
 
 .approve-btn {
-  background: #4caf50;
-  color: white;
-  padding: 8px 14px;
-  border: none;
+  background: var(--lsu-gold);
+  padding: 10px 16px;
   border-radius: 6px;
-  cursor: pointer;
   font-weight: bold;
-}
-.approve-btn:hover {
-  background: #449d48;
+  cursor: pointer;
+  border: none;
 }
 
 .deny-btn {
-  background: #e53935;
-  color: white;
-  padding: 8px 14px;
-  border: none;
+  background: #d9534f;
+  padding: 10px 16px;
   border-radius: 6px;
-  cursor: pointer;
   font-weight: bold;
-}
-.deny-btn:hover {
-  background: #c62828;
+  color: white;
+  cursor: pointer;
+  border: none;
 }
 
-.missing-item-warning {
-  color: #d32f2f;
+.deny-box {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.deny-box textarea {
+  border: 2px solid var(--lsu-purple);
+  border-radius: 6px;
+  padding: 10px;
+  background: white;
+}
+
+.submit-deny-btn {
+  background: var(--lsu-gold);
+  padding: 8px 14px;
+  border-radius: 6px;
   font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.resolved-badge {
+  margin-top: 10px;
+  background: #d6c8ff;
+  color: var(--lsu-purple);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  border: 1px solid var(--lsu-purple);
 }
