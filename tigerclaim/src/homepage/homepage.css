@@ -45,16 +45,6 @@
   margin-bottom: 40px;
 }
 
-.home-card h1 {
-  color: var(--lsu-purple);
-}
-
-.home-sub {
-  margin-top: 10px;
-  color: #444;
-  font-size: 1.1rem;
-}
-
 .feature-section {
   margin-top: 30px;
 }
@@ -78,6 +68,7 @@
   border-radius: 16px;
   box-shadow: 0 6px 14px rgba(0,0,0,0.1);
   border-left: 6px solid var(--lsu-purple);
+  transition: 0.25s;
 }
 
 .feature-card h3 {
@@ -88,6 +79,15 @@
 .feature-card p {
   color: #444;
   line-height: 1.4rem;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.2);
 }
 
 .map-wrapper {
@@ -108,48 +108,50 @@
 }
 
 .contact-section {
-padding: 30px;
-border-radius: 16px;
-margin-bottom: 40px;
-text-align: left;
+  padding: 30px;
+  border-radius: 16px;
+  margin-bottom: 40px;
+  text-align: left;
 }
 
 .contact-section h2 {
-color: var(--lsu-purple);
-font-size: 2rem;
-margin-bottom: 10px;
-text-align: center;
-}
-
-.contact-section p {
-color: #444;
-max-width: 700px;
-margin: 0 auto 25px auto;
-font-size: 1.1rem;
+  color: var(--lsu-purple);
+  font-size: 2rem;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
 .contact-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-gap: 20px;
-margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
 }
 
 .contact-card {
-background: #fafafa;
-padding: 20px;
-border-radius: 14px;
-box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-border-left: 6px solid var(--lsu-purple);
+  background: #fafafa;
+  padding: 20px;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  border-left: 6px solid var(--lsu-purple);
 }
 
 .contact-card h3 {
-color: var(--lsu-purple);
-margin-bottom: 8px;
-font-size: 1.3rem;
+  color: var(--lsu-purple);
+  margin-bottom: 8px;
+  font-size: 1.3rem;
 }
 
 .contact-card p {
-color: #555;
-font-size: 1.05rem;
+  color: #555;
+  font-size: 1.05rem;
+}
+.email-link {
+  color: var(--lsu-purple);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.email-link:hover {
+  text-decoration: underline;
 }

@@ -8,7 +8,7 @@ import SearchLostItem from "./search/search";
 import HomePage from "./homepage/homepage";
 import Login from "./loginpage/login";
 import Profile from "./profile/profile";
-import AdminPanel from "./admin/admin"
+import AdminPanel from "./admin/admin";
 
 import defaultProfile from "./assets/profile.png";
 
@@ -27,6 +27,9 @@ const App = () => {
   const [notifCount, setNotifCount] = useState(0);
   const [showNotif, setShowNotif] = useState(false);
 
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [selectedLogoutButton, setSelectedLogoutButton] = useState(null);
+
   useEffect(() => {
     const handler = () => setNotifCount(unreadCount(user));
     window.addEventListener("notifications-updated", handler);
@@ -40,7 +43,6 @@ const App = () => {
 
   useEffect(() => {
     if (!user) return;
-
     const allProfiles = JSON.parse(localStorage.getItem("allProfiles") || "{}");
     const profile = allProfiles[user] || {};
 
@@ -121,14 +123,13 @@ const App = () => {
             </li>
 
             {user === "admin@lsu.edu" && (
-            <li
-              className={activePage === "admin" ? "active" : ""}
-              onClick={() => setActivePage("admin")}
-            >
-              Admin Panel
-            </li>
-          )}
-
+              <li
+                className={activePage === "admin" ? "active" : ""}
+                onClick={() => setActivePage("admin")}
+              >
+                Admin Panel
+              </li>
+            )}
 
             <li
               className={activePage === "search" ? "active" : ""}
@@ -141,22 +142,10 @@ const App = () => {
               className={activePage === "report" ? "active" : ""}
               onClick={() => setActivePage("report")}
             >
-              Report Lost / Found
+              Report Lost & Found
             </li>
 
-            <li
-              className="logout-btn" 
-                  onClick={() => {
-                  if (window.confirm("Are you sure you want to log out?")) {
-                  localStorage.removeItem("lostAndFoundUser");
-                  setUser("");
-                  setActivePage("home");
-                  setProfilePhoto(defaultProfile);
-                  setProfileName("");
-                  setProfilePhone("");
-                }
-              }}
-            >
+            <li className="logout-btn" onClick={() => setShowLogoutModal(true)}>
               Logout
             </li>
           </ul>
@@ -173,6 +162,47 @@ const App = () => {
       <footer className="footer">
         © {new Date().getFullYear()} Group 6 | Tiger Claim • All Rights Reserved
       </footer>
+
+      {showLogoutModal && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <h3>{user.split("@")[0]}</h3>
+            <p>Are you sure you want to log out?</p>
+
+            <div className="modal-buttons">
+              <button
+                className={`logout-btn-select ${
+                  selectedLogoutButton === "yes" ? "selected" : ""
+                }`}
+                onClick={() => {
+                  setSelectedLogoutButton("yes");
+                  setTimeout(() => {
+                    localStorage.removeItem("lostAndFoundUser");
+                    setUser("");
+                    setActivePage("home");
+                  }, 300);
+                }}
+              >
+                Yes
+              </button>
+              <button
+                className={`logout-btn-select ${
+                  selectedLogoutButton === "no" ? "selected" : ""
+                }`}
+                onClick={() => {
+                  setSelectedLogoutButton("no");
+                  setTimeout(() => {
+                    setShowLogoutModal(false);
+                    setSelectedLogoutButton(null);
+                  }, 300);
+                }}
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
