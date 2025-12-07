@@ -9,7 +9,6 @@ const NotificationsDropdown = ({ user, onClose }) => {
   const list = getNotifications(user);
 
   const handleRead = (notif) => {
-    // If this notification is about editing a report, set metadata
     if (notif.data && notif.data.type === "edit-report") {
       const meta = {
         reportType: notif.data.reportType, // "lost" | "found"
@@ -17,12 +16,11 @@ const NotificationsDropdown = ({ user, onClose }) => {
       };
       localStorage.setItem("editReportMeta", JSON.stringify(meta));
 
-      // Navigate to the combined report page
       window.dispatchEvent(new CustomEvent("nav", { detail: "report" }));
     }
 
     markAsRead(user, notif.id);
-    onClose(); // close dropdown after clicking
+    onClose(); 
   };
 
   return (

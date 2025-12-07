@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { pushNotification } from "../notifications/notifications";
-import "./report.css"; // you can style this similar to lost.css/found.css
+import "./report.css";
 
 const FOUND_STORAGE_KEY = "foundItems.v1";
 const LOST_STORAGE_KEY = "lostItems.v1";
+const ADMIN = "admin@lsu.edu";
 
 const LSU_LOCATIONS = [
   "Patrick F. Taylor Hall",
@@ -32,16 +33,17 @@ const CATEGORIES = [
   "Electronics",
   "Clothing",
   "Bag",
+  "Wallets/Purses",
   "IDs & Cards",
   "Books & Notebooks",
   "Keys",
   "Water Bottle",
   "Sports Gear",
   "Jewelry",
+  "Scooter/Bikes",
   "Other",
 ];
 
-// Simple UUID fallback
 function generateId() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
     const r = (Math.random() * 16) | 0;
@@ -50,16 +52,13 @@ function generateId() {
   });
 }
 
-// Helper for today (for max on date fields)
 const todayStr = new Date().toISOString().split("T")[0];
 
 const ReportPage = () => {
   const loggedInUser = localStorage.getItem("lostAndFoundUser") || "";
 
-  // Owner vs Finder
-  const [role, setRole] = useState(null); // "owner" | "finder"
+  const [role, setRole] = useState(null);
 
-  // ===== LOST (OWNER) FORM STATE =====
   const [lostId, setLostId] = useState(null);
   const [lostItemName, setLostItemName] = useState("");
   const [lostCategory, setLostCategory] = useState("");
@@ -69,7 +68,6 @@ const ReportPage = () => {
   const [lostDetails, setLostDetails] = useState("");
   const [lostPhoto, setLostPhoto] = useState("");
 
-  // ===== FOUND (FINDER) FORM STATE =====
   const [foundId, setFoundId] = useState(null);
   const [foundItemName, setFoundItemName] = useState("");
   const [foundCategory, setFoundCategory] = useState("");
@@ -84,18 +82,43 @@ const ReportPage = () => {
   const [foundDescription, setFoundDescription] = useState("");
   const [foundPhoto, setFoundPhoto] = useState("");
 
-  // ===== EDIT MODE =====
   const [isEditing, setIsEditing] = useState(false);
-  const [editingType, setEditingType] = useState(null); // "lost" | "found"
+  const [editingType, setEditingType] = useState(null);
 
-  // ===== MATCH POPUP STATE (Finder flow) =====
   const [matchModalOpen, setMatchModalOpen] = useState(false);
   const [matchCandidates, setMatchCandidates] = useState([]);
   const [pendingFoundDraft, setPendingFoundDraft] = useState(null);
 
-  // ------------------------------------------
-  // LOAD EDIT METADATA FROM NOTIFICATION
-  // ------------------------------------------
+  const resetAllForms = () => {
+    setLostId(null);
+    setLostItemName("");
+    setLostCategory("");
+    setLostLocation("");
+    setLostLocationOther("");
+    setLostDate("");
+    setLostDetails("");
+    setLostPhoto("");
+
+    setFoundId(null);
+    setFoundItemName("");
+    setFoundCategory("");
+    setFoundCategoryOther("");
+    setFoundLocation("");
+    setFoundLocationOther("");
+    setFoundDate("");
+    setFoundPossession("yes");
+    setFoundCurrentLocation("");
+    setFoundCurrentOther("");
+    setFoundRoomNumber("");
+    setFoundDescription("");
+    setFoundPhoto("");
+
+    setIsEditing(false);
+    setEditingType(null);
+    setRole(null);
+    setPendingFoundDraft(null);
+  };
+
   useEffect(() => {
     const raw = localStorage.getItem("editReportMeta");
     if (!raw) return;
@@ -140,17 +163,12 @@ const ReportPage = () => {
           setFoundPhoto(item.photo || item.image || "");
         }
       }
-    } catch (e) {
-      console.error("Failed to parse editReportMeta", e);
-    } finally {
-      // Clear so it doesn't keep reapplying
+    } catch {}
+    finally {
       localStorage.removeItem("editReportMeta");
     }
   }, []);
 
-  // ------------------------------------------
-  // IMAGE UPLOAD HANDLERS
-  // ------------------------------------------
   const handleLostPhotoUpload = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -167,16 +185,9 @@ const ReportPage = () => {
     reader.readAsDataURL(file);
   };
 
-  // ------------------------------------------
-  // SUBMIT: LOST (OWNER)
-  // ------------------------------------------
   const handleLostSubmit = (e) => {
     e.preventDefault();
     const email = loggedInUser;
-    if (!email) {
-      alert("Please log in with your LSU email first.");
-      return;
-    }
 
     const listRaw = localStorage.getItem(LOST_STORAGE_KEY);
     const list = listRaw ? JSON.parse(listRaw) : [];
@@ -185,7 +196,7 @@ const ReportPage = () => {
       lostLocation === "Other" ? lostLocationOther : lostLocation;
 
     if (isEditing && editingType === "lost" && lostId) {
-      const updatedList = list.map((item) =>
+      const updated = list.map((item) =>
         item.id === lostId
           ? {
               ...item,
@@ -198,85 +209,66 @@ const ReportPage = () => {
             }
           : item
       );
-      localStorage.setItem(LOST_STORAGE_KEY, JSON.stringify(updatedList));
-      pushNotification(
-        email,
-        `Your lost item report was updated: ${lostItemName}`
-      );
+      localStorage.setItem(LOST_STORAGE_KEY, JSON.stringify(updated));
+      pushNotification(email, `Your lost item report was updated: ${lostItemName}`);
       alert("Lost report updated.");
-    } else {
-      const newId = generateId();
-      const newItem = {
-        id: newId,
-        itemName: lostItemName,
-        category: lostCategory,
-        location: locationFinal,
-        dateLost: lostDate,
-        description: lostDetails,
-        photo: lostPhoto,
-        ownerEmail: email,
-        createdAt: new Date().toISOString(),
-      };
-
-      const updatedList = [newItem, ...list];
-      localStorage.setItem(LOST_STORAGE_KEY, JSON.stringify(updatedList));
-
-      // notification with metadata for editing later
-      pushNotification(email, `You reported a lost item: ${lostItemName}`, {
-        type: "edit-report",
-        reportType: "lost",
-        reportId: newId,
-      });
-
-      alert("Lost item submitted!");
-      setLostId(null);
-      setLostItemName("");
-      setLostCategory("");
-      setLostLocation("");
-      setLostLocationOther("");
-      setLostDate("");
-      setLostDetails("");
-      setLostPhoto("");
-      setIsEditing(false);
-      setEditingType(null);
+      resetAllForms();
+      return;
     }
+
+    const newId = generateId();
+    const newItem = {
+      id: newId,
+      itemName: lostItemName,
+      category: lostCategory,
+      location: locationFinal,
+      dateLost: lostDate,
+      description: lostDetails,
+      photo: lostPhoto,
+      ownerEmail: email,
+      createdAt: new Date().toISOString(),
+    };
+
+    localStorage.setItem(LOST_STORAGE_KEY, JSON.stringify([newItem, ...list]));
+    pushNotification(email, `You reported a lost item: ${lostItemName}`, {
+      type: "edit-report",
+      reportType: "lost",
+      reportId: newId,
+    });
+
+    alert("Lost item submitted!");
+    resetAllForms();
   };
 
-  // ------------------------------------------
-  // FIND MATCHING LOST ITEMS FOR A FOUND REPORT
-  // ------------------------------------------
   const findLostMatches = (draft) => {
     const listRaw = localStorage.getItem(LOST_STORAGE_KEY);
     const lostList = listRaw ? JSON.parse(listRaw) : [];
-    const descWords =
+
+    const words =
       draft.description
         ?.toLowerCase()
         .split(/\s+/)
-        .filter((w) => w.length >= 4) || [];
+        .filter((w) => w.length >= 3) || [];
 
     return lostList.filter((lost) => {
-      const matchCategory =
-        !draft.category || lost.category === draft.category;
-      const matchLocation =
-        !draft.location || lost.location === draft.location;
-
       const lostDesc = (lost.description || "").toLowerCase();
-      const hasOverlap = descWords.some((w) => lostDesc.includes(w));
+      const overlap = words.filter((w) => lostDesc.includes(w)).length;
+      const catMatch =
+        draft.category === lost.category ||
+        draft.category === "" ||
+        lost.category === "";
+      const locMatch =
+        draft.location === lost.location ||
+        draft.location === "" ||
+        lost.location === "";
 
-      return matchCategory && matchLocation && hasOverlap;
+      return overlap >= 1 || catMatch || locMatch;
     });
   };
 
-  // ------------------------------------------
-  // SUBMIT: FOUND (FINDER) – STEP 1: SHOW MATCHES
-  // ------------------------------------------
   const handleFoundStartSubmit = (e) => {
     e.preventDefault();
     const email = loggedInUser;
-    if (!email) {
-      alert("Please log in with your LSU email first.");
-      return;
-    }
 
     const locationFinal =
       foundLocation === "Other" ? foundLocationOther : foundLocation;
@@ -301,40 +293,30 @@ const ReportPage = () => {
       createdAt: new Date().toISOString(),
     };
 
-    // find lost matches
     const matches = findLostMatches(draft);
-
     setPendingFoundDraft(draft);
 
     if (matches.length > 0) {
       setMatchCandidates(matches);
       setMatchModalOpen(true);
     } else {
-      // no matches → just save found report normally
       saveFoundWithoutMatch(draft, email);
     }
   };
 
-  // ------------------------------------------
-  // Save found item when NO lost match
-  // ------------------------------------------
   const saveFoundWithoutMatch = (draft, email) => {
     const listRaw = localStorage.getItem(FOUND_STORAGE_KEY);
     const list = listRaw ? JSON.parse(listRaw) : [];
 
-    let finalList;
+    let updated;
     if (isEditing && editingType === "found" && foundId) {
-      finalList = list.map((item) =>
-        item.id === foundId ? { ...item, ...draft, id: foundId } : item
+      updated = list.map((i) =>
+        i.id === foundId ? { ...i, ...draft, id: foundId } : i
       );
-      pushNotification(
-        email,
-        `Your found item report was updated: ${draft.itemName}`
-      );
+      pushNotification(email, `Your found report was updated: ${draft.itemName}`);
       alert("Found report updated.");
     } else {
-      finalList = [draft, ...list];
-      // new report → include metadata for editing
+      updated = [draft, ...list];
       pushNotification(email, `You reported a found item: ${draft.itemName}`, {
         type: "edit-report",
         reportType: "found",
@@ -343,48 +325,38 @@ const ReportPage = () => {
       alert("Found item submitted!");
     }
 
-    localStorage.setItem(FOUND_STORAGE_KEY, JSON.stringify(finalList));
-
-    // reset finder form
-    setFoundId(null);
-    setFoundItemName("");
-    setFoundCategory("");
-    setFoundCategoryOther("");
-    setFoundLocation("");
-    setFoundLocationOther("");
-    setFoundDate("");
-    setFoundPossession("yes");
-    setFoundCurrentLocation("");
-    setFoundCurrentOther("");
-    setFoundRoomNumber("");
-    setFoundDescription("");
-    setFoundPhoto("");
-    setIsEditing(false);
-    setEditingType(null);
-    setPendingFoundDraft(null);
-    setMatchModalOpen(false);
-    setMatchCandidates([]);
+    localStorage.setItem(FOUND_STORAGE_KEY, JSON.stringify(updated));
+    resetAllForms();
   };
 
-  // ------------------------------------------
-  // When finder clicks "I found this item" on a lost match
-  // → create found item + claim linking both
-  // ------------------------------------------
   const handleFoundMatchesLost = (lostItem) => {
-    if (!pendingFoundDraft || !loggedInUser) return;
+    const draft = pendingFoundDraft;
     const email = loggedInUser;
 
-    // 1) Save found item
     const foundListRaw = localStorage.getItem(FOUND_STORAGE_KEY);
     const foundList = foundListRaw ? JSON.parse(foundListRaw) : [];
 
-    const newFoundItem = { ...pendingFoundDraft };
-    const updatedFoundList = [newFoundItem, ...foundList];
-    localStorage.setItem(FOUND_STORAGE_KEY, JSON.stringify(updatedFoundList));
+    const existingClaimsRaw = localStorage.getItem("claims");
+    const existingClaims = existingClaimsRaw ? JSON.parse(existingClaimsRaw) : [];
 
-    // 2) Update lost item with pending claim
-    const lostListRaw = localStorage.getItem(LOST_STORAGE_KEY);
-    const lostList = lostListRaw ? JSON.parse(lostListRaw) : [];
+    const duplicate = existingClaims.find(
+      (c) =>
+        c.userId === email &&
+        c.itemId === draft.id &&
+        c.lostItemId === lostItem.id &&
+        c.status === "pending"
+    );
+
+    if (duplicate) {
+      alert("You already submitted a claim for this lost item.");
+      return;
+    }
+
+    const newFoundList = [draft, ...foundList];
+    localStorage.setItem(FOUND_STORAGE_KEY, JSON.stringify(newFoundList));
+
+    const lostRaw = localStorage.getItem(LOST_STORAGE_KEY);
+    const lostList = lostRaw ? JSON.parse(lostRaw) : [];
     const timestamp = Date.now();
 
     const updatedLostList = lostList.map((item) =>
@@ -393,117 +365,75 @@ const ReportPage = () => {
             ...item,
             pendingClaim: {
               userId: email,
-              claimDescription: pendingFoundDraft.description,
+              claimDescription: draft.description,
               timestamp,
-              foundItemId: newFoundItem.id,
+              foundItemId: draft.id,
             },
           }
         : item
     );
+
     localStorage.setItem(LOST_STORAGE_KEY, JSON.stringify(updatedLostList));
 
-    // 3) Create claim object
-    const existingClaimsRaw = localStorage.getItem("claims");
-    const existingClaims = existingClaimsRaw
-      ? JSON.parse(existingClaimsRaw)
-      : [];
-
     const newClaim = {
-      id: Date.now(),
+      id: timestamp,
       type: "found-matches-lost",
-      itemId: newFoundItem.id,
       itemType: "found",
+      itemId: draft.id,
       lostItemId: lostItem.id,
       userId: email,
-      userDescription: pendingFoundDraft.description,
+      userDescription: draft.description,
       lostItemDescription: lostItem.description,
       timestamp,
       status: "pending",
-      image: newFoundItem.photo || null,
-      itemDescription: newFoundItem.description,
-      itemFoundLocation: newFoundItem.location,
-      itemDate: newFoundItem.dateFound,
+      image: draft.photo,
+      itemDescription: draft.description,
+      itemFoundLocation: draft.location,
+      itemDate: draft.dateFound,
     };
 
-    localStorage.setItem(
-      "claims",
-      JSON.stringify([...existingClaims, newClaim])
-    );
+    localStorage.setItem("claims", JSON.stringify([...existingClaims, newClaim]));
 
-    // 4) Notifications
-    pushNotification(
-      email,
-      `You reported a found item that may match a lost report: ${lostItem.itemName}. Your claim is pending review.`
-    );
-
+    pushNotification(email, `You reported a found item that may match '${lostItem.itemName}'.`);
     if (lostItem.ownerEmail) {
-      pushNotification(
-        lostItem.ownerEmail,
-        `Someone reported they may have found your lost item: ${lostItem.itemName}.`
-      );
+      pushNotification(lostItem.ownerEmail, `Someone may have found your lost item: ${lostItem.itemName}.`);
     }
+    pushNotification(ADMIN, `A claim for ${lostItem.itemName} has been submitted.`);
 
-    // cleanup + reset form
     alert("Your report and claim were submitted for review.");
-    setPendingFoundDraft(null);
+    resetAllForms();
     setMatchModalOpen(false);
     setMatchCandidates([]);
-
-    setFoundId(null);
-    setFoundItemName("");
-    setFoundCategory("");
-    setFoundCategoryOther("");
-    setFoundLocation("");
-    setFoundLocationOther("");
-    setFoundDate("");
-    setFoundPossession("yes");
-    setFoundCurrentLocation("");
-    setFoundCurrentOther("");
-    setFoundRoomNumber("");
-    setFoundDescription("");
-    setFoundPhoto("");
-    setIsEditing(false);
-    setEditingType(null);
   };
 
-  // ------------------------------------------
-  // RENDER
-  // ------------------------------------------
   return (
     <div className="report-page-container">
       <h1>Report Lost or Found Item</h1>
 
-      {/* Step 1: Owner vs Finder */}
       <div className="role-toggle">
         <button
           className={role === "owner" ? "active" : ""}
           onClick={() => {
+            resetAllForms();
             setRole("owner");
-            setIsEditing(false);
-            setEditingType(null);
           }}
         >
           I am the Owner (I lost an item)
         </button>
+
         <button
           className={role === "finder" ? "active" : ""}
           onClick={() => {
+            resetAllForms();
             setRole("finder");
-            setIsEditing(false);
-            setEditingType(null);
           }}
         >
           I am the Finder (I found an item)
         </button>
       </div>
 
-      {!role && (
-        <p style={{ marginTop: "20px" }}>
-          Please select whether you are the owner or the finder to continue.
-        </p>
-      )}
+      {!role && <p>Please select an option to continue.</p>}
 
-      {/* OWNER FORM */}
       {role === "owner" && (
         <div className="report-section">
           <h2>{isEditing ? "Edit Lost Item Report" : "Report a Lost Item"}</h2>
@@ -513,7 +443,6 @@ const ReportPage = () => {
               type="text"
               value={lostItemName}
               onChange={(e) => setLostItemName(e.target.value)}
-              placeholder="AirPods, laptop, wallet…"
               required
             />
 
@@ -533,8 +462,9 @@ const ReportPage = () => {
             {lostCategory === "Other" && (
               <input
                 type="text"
-                placeholder="Enter custom category"
+                value={lostCategory}
                 onChange={(e) => setLostCategory(e.target.value)}
+                required
               />
             )}
 
@@ -555,9 +485,9 @@ const ReportPage = () => {
             {lostLocation === "Other" && (
               <input
                 type="text"
-                placeholder="Enter custom location"
                 value={lostLocationOther}
                 onChange={(e) => setLostLocationOther(e.target.value)}
+                required
               />
             )}
 
@@ -574,38 +504,26 @@ const ReportPage = () => {
             <textarea
               value={lostDetails}
               onChange={(e) => setLostDetails(e.target.value)}
-              placeholder="Describe identifying marks, color, stickers, etc."
-              maxLength={250} 
+              maxLength={250}
               required
             />
 
             <label>Upload Photo:</label>
-            <input type="file" accept="image/*" onChange={handleLostPhotoUpload} 
-              required
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleLostPhotoUpload}
+              required={!isEditing}
             />
-            {lostPhoto && (
-              <img
-                src={lostPhoto}
-                alt="Lost item preview"
-                style={{
-                  marginTop: "10px",
-                  width: "120px",
-                  borderRadius: "8px",
-                  border: "1px solid #ccc",
-                }}
-              />
-            )}
+            {lostPhoto && <img src={lostPhoto} className="preview-img" alt="" />}
 
             <button type="submit" className="submit-btn">
-              {isEditing && editingType === "lost"
-                ? "Update Lost Report"
-                : "Submit Lost Item"}
+              {isEditing ? "Update Lost Report" : "Submit Lost Item"}
             </button>
           </form>
         </div>
       )}
 
-      {/* FINDER FORM */}
       {role === "finder" && (
         <div className="report-section">
           <h2>{isEditing ? "Edit Found Item Report" : "Report a Found Item"}</h2>
@@ -615,7 +533,6 @@ const ReportPage = () => {
               type="text"
               value={foundItemName}
               onChange={(e) => setFoundItemName(e.target.value)}
-              placeholder="AirPods, laptop, wallet…"
               required
             />
 
@@ -629,22 +546,22 @@ const ReportPage = () => {
               <option value="Electronics">Electronics</option>
               <option value="Clothing">Clothing</option>
               <option value="Bag">Bag</option>
+              <option value="Wallets/Purses">Wallets/Purses</option>
               <option value="IDs & Cards">IDs & Cards</option>
               <option value="Books & Notebooks">Books & Notebooks</option>
               <option value="Keys">Keys</option>
               <option value="Water Bottle">Water Bottle</option>
               <option value="Sports Gear">Sports Gear</option>
               <option value="Jewelry">Jewelry</option>
+              <option value="Scooter/Bikes">Scooter/Bikes</option>
               <option value="Other">Other</option>
             </select>
 
             {foundCategory === "Other" && (
               <input
                 type="text"
-                placeholder="Enter custom category"
                 value={foundCategoryOther}
                 onChange={(e) => setFoundCategoryOther(e.target.value)}
-                style={{ marginTop: "8px" }}
                 required
               />
             )}
@@ -665,9 +582,9 @@ const ReportPage = () => {
               required
             >
               <option value="">Select</option>
-              {LSU_LOCATIONS.map((loc) => (
-                <option key={loc} value={loc}>
-                  {loc}
+              {LSU_LOCATIONS.map((place, idx) => (
+                <option key={idx} value={place}>
+                  {place}
                 </option>
               ))}
             </select>
@@ -675,10 +592,8 @@ const ReportPage = () => {
             {foundLocation === "Other" && (
               <input
                 type="text"
-                placeholder="Enter location"
                 value={foundLocationOther}
                 onChange={(e) => setFoundLocationOther(e.target.value)}
-                style={{ marginTop: "8px" }}
                 required
               />
             )}
@@ -705,16 +620,16 @@ const ReportPage = () => {
               </label>
             </div>
 
-            <label>Where is the item currently?</label>
+            <label>Where is the item now?</label>
             <select
               value={foundCurrentLocation}
               onChange={(e) => setFoundCurrentLocation(e.target.value)}
               required
             >
               <option value="">Select</option>
-              {LSU_LOCATIONS.map((loc) => (
-                <option key={loc} value={loc}>
-                  {loc}
+              {LSU_LOCATIONS.map((place, idx) => (
+                <option key={idx} value={place}>
+                  {place}
                 </option>
               ))}
             </select>
@@ -722,101 +637,70 @@ const ReportPage = () => {
             {foundCurrentLocation === "Other" && (
               <input
                 type="text"
-                placeholder="Enter location"
                 value={foundCurrentOther}
                 onChange={(e) => setFoundCurrentOther(e.target.value)}
-                style={{ marginTop: "8px" }}
                 required
               />
             )}
 
-            {(foundCurrentLocation !== "" || foundCurrentOther !== "") && (
-              <input
-                type="text"
-                placeholder="Enter room number (e.g., Room 132)"
-                value={foundRoomNumber}
-                onChange={(e) => setFoundRoomNumber(e.target.value)}
-                style={{ marginTop: "8px" }}
-              />
-            )}
+            <input
+              type="text"
+              placeholder="Room number (optional)"
+              value={foundRoomNumber}
+              onChange={(e) => setFoundRoomNumber(e.target.value)}
+            />
 
-            <label>Item Description:</label>
+            <label>Description:</label>
             <textarea
               value={foundDescription}
               onChange={(e) => setFoundDescription(e.target.value)}
+              maxLength={250}
               required
-              placeholder="Describe identifying marks, color, stickers, etc."
-              maxLength={250} 
             />
 
             <label>Upload Photo:</label>
-            <input type="file" accept="image/*" onChange={handleFoundPhotoUpload} 
-              required
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFoundPhotoUpload}
+              required={!isEditing}
             />
-            {foundPhoto && (
-              <img
-                src={foundPhoto}
-                alt="Found item preview"
-                style={{
-                  marginTop: "10px",
-                  width: "120px",
-                  borderRadius: "8px",
-                  border: "1px solid #ccc",
-                }}
-              />
-            )}
+            {foundPhoto && <img src={foundPhoto} className="preview-img" alt="" />}
 
             <button type="submit" className="submit-btn">
-              {isEditing && editingType === "found"
-                ? "Check Matches & Update"
-                : "Check Lost Reports & Submit"}
+              {isEditing ? "Check Matches & Update" : "Check Lost Reports & Submit"}
             </button>
           </form>
         </div>
       )}
 
-      {/* MATCH POPUP FOR FINDER */}
       {matchModalOpen && (
         <div className="modal-overlay">
           <div className="modal">
-            <h3>Possible Lost Reports That Match Your Item</h3>
-            {matchCandidates.length === 0 && (
-              <p>No matching lost reports found.</p>
-            )}
+            <h3>Possible Lost Reports Matching Your Found Item</h3>
 
-            {matchCandidates.length > 0 && (
-              <div className="match-list">
-                {matchCandidates.map((lost) => (
-                  <div key={lost.id} className="match-card">
-                    <h4>{lost.itemName}</h4>
-                    <p>
-                      <strong>Category:</strong> {lost.category}
-                    </p>
-                    <p>
-                      <strong>Location:</strong> {lost.location}
-                    </p>
-                    <p>
-                      <strong>Date Lost:</strong>{" "}
-                      {lost.dateLost || lost.date || "Unknown"}
-                    </p>
-                    <p>
-                      <strong>Description:</strong> {lost.description}
-                    </p>
-                    <button onClick={() => handleFoundMatchesLost(lost)}>
-                      I found this item
-                    </button>
-                  </div>
-                ))}
-              </div>
+            {matchCandidates.length > 0 ? (
+              matchCandidates.map((lost) => (
+                <div key={lost.id} className="match-card">
+                  <h4>{lost.itemName}</h4>
+                  <p><strong>Category:</strong> {lost.category}</p>
+                  <p><strong>Location:</strong> {lost.location}</p>
+                  <p><strong>Date Lost:</strong> {lost.dateLost}</p>
+                  <p><strong>Description:</strong> {lost.description}</p>
+
+                  <button onClick={() => handleFoundMatchesLost(lost)}>
+                    I found this item
+                  </button>
+                </div>
+              ))
+            ) : (
+              <p>No matches found.</p>
             )}
 
             <div className="modal-buttons">
               <button
                 onClick={() =>
-                  saveFoundWithoutMatch(
-                    pendingFoundDraft,
-                    loggedInUser || ""
-                  )
+                  saveFoundWithoutMatch(pendingFoundDraft, loggedInUser)
                 }
               >
                 None of these match – submit my report

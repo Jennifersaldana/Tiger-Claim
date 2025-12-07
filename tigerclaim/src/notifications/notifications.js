@@ -1,15 +1,12 @@
-// Get notifications for a specific user
 export function getNotifications(email) {
   const raw = localStorage.getItem("notifications-" + email);
   return raw ? JSON.parse(raw) : [];
 }
 
-// Save notifications
 export function saveNotifications(email, list) {
   localStorage.setItem("notifications-" + email, JSON.stringify(list));
 }
 
-// Only saves the notification
 export function addNotification(email, message, data = null) {
   const current = getNotifications(email);
   const newNotif = {
@@ -17,19 +14,18 @@ export function addNotification(email, message, data = null) {
     message,
     seen: false,
     createdAt: new Date().toISOString(),
-    data, // <--- optional metadata (edit-report etc.)
+    data, 
   };
   const updated = [newNotif, ...current];
   saveNotifications(email, updated);
 }
 
-// Adds the notification. Triggers the UI update event
 export function pushNotification(email, message, data = null) {
   addNotification(email, message, data);
   window.dispatchEvent(new Event("notifications-updated"));
 }
 
-// Mark a single notification as read
+
 export function markAsRead(email, id) {
   const current = getNotifications(email);
   const updated = current.map((n) =>
@@ -38,7 +34,6 @@ export function markAsRead(email, id) {
   saveNotifications(email, updated);
 }
 
-// Count unread notifications
 export function unreadCount(email) {
   return getNotifications(email).filter((n) => !n.seen).length;
 }
