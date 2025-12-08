@@ -12,8 +12,8 @@ import AdminPanel from "./admin/admin";
 
 import defaultProfile from "./assets/profile.png";
 
-import NotificationsDropdown from "../src/notifications/notification";
-import { unreadCount } from "../src/notifications/notifications";
+import NotificationsDropdown from "./notifications/notification";
+import { unreadCount } from "./notifications/notifications";
 
 const App = () => {
   const [activePage, setActivePage] = useState("home");
@@ -31,9 +31,12 @@ const App = () => {
   const [selectedLogoutButton, setSelectedLogoutButton] = useState(null);
 
   useEffect(() => {
-    const handler = () => setNotifCount(unreadCount(user));
-    window.addEventListener("notifications-updated", handler);
-    return () => window.removeEventListener("notifications-updated", handler);
+    if (user) {
+      localStorage.setItem("lostAndFoundUser", user);
+    } else {
+      localStorage.removeItem("lostAndFoundUser");
+      setActivePage("home");
+    }
   }, [user]);
 
   useEffect(() => {
@@ -53,7 +56,11 @@ const App = () => {
 
   useEffect(() => {
     if (user) setNotifCount(unreadCount(user));
+    const handler = () => setNotifCount(unreadCount(user));
+    window.addEventListener("notifications-updated", handler);
+    return () => window.removeEventListener("notifications-updated", handler);
   }, [user]);
+
 
   useEffect(() => {
     const handler = (e) => setActivePage(e.detail);
@@ -177,9 +184,9 @@ const App = () => {
                 onClick={() => {
                   setSelectedLogoutButton("yes");
                   setTimeout(() => {
-                    localStorage.removeItem("lostAndFoundUser");
-                    setUser("");
-                    setActivePage("home");
+                    setUser(""); // Clears user and localStorage via effect
+                    setShowLogoutModal(false);
+                    setSelectedLogoutButton(null);
                   }, 300);
                 }}
               >

@@ -24,9 +24,7 @@ const Login = ({ onLogin }) => {
       return;
     }
 
-   
-    localStorage.setItem("lostAndFoundUser", email);
-    onLogin(email);
+    onLogin(email); 
   };
 
   return (
