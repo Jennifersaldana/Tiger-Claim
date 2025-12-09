@@ -1,0 +1,433 @@
+.profile-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #fdd023, #341e79); 
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .profile-card {
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 30px 40px;
+    width: 350px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s;
+  }
+  
+  .profile-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #341e79; /* LSU purple */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    margin-bottom: 10px;
+  }
+  
+  .file-input {
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
+  .profile-body input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    transition: 0.2s;
+  }
+  
+  .profile-body input:focus {
+    outline: none;
+    border-color: #341e79;
+    box-shadow: 0 0 8px rgba(52,30,121,0.5);
+  }
+  
+  .profile-body button {
+    width: 100%;
+    padding: 12px;
+    background-color: #341e79;
+    color: #fdd023;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .profile-body button:hover {
+    background-color: #fdd023;
+    color: #341e79;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  }
+  .profile-dropdown-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+  }
+  
+  .top-right-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #341e79; 
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    right: 0;
+    margin-top: 10px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    padding: 15px;
+    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+  }
+  
+  .dropdown-menu button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #341e79;
+    color: #fdd023;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  
+  .dropdown-menu button:hover {
+    background-color: #fdd023;
+    color: #341e79;
+  }
+  
+  .profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+  }
+  
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #341e79;
+    margin-bottom: 10px;
+  }
+  
+  .file-input {
+    font-size: 14px;
+  }
+  
+  .profile-body input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  
+  .invalid-input {
+    border-color: #ff4d4f;
+  }
+  
+  .error-message {
+    color: #ff4d4f;
+    font-size: 13px;
+    margin-bottom: 5px;
+    text-align: left;
+  }
+  
+  .profile-body button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    background-color: #341e79;
+    color: #fdd023;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+  
+  .profile-body button:hover:not(:disabled) {
+    background-color: #fdd023;
+    color: #341e79;
+  }
+  
+  .disabled-button {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+
+.profile-dropdown-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+  }
+  
+  .top-right-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #341e79;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    right: 0;
+    margin-top: 10px;
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    padding: 15px;
+    min-width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+  }
+  
+  .dropdown-menu button {
+    padding: 8px 12px;
+    border: none;
+    background-color: #341e79;
+    color: #fdd023;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  
+  .dropdown-menu button:hover {
+    background-color: #fdd023;
+    color: #341e79;
+  }
+  
+  .full-page-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+  }
+  
+  .profile-card-full {
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    width: 400px;
+    max-width: 90%;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .profile-card-full h2 {
+    margin-bottom: 20px;
+    color: #341e79;
+  }
+  
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .profile-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #341e79;
+    margin-bottom: 10px;
+  }
+  
+  .file-input {
+    font-size: 14px;
+  }
+  
+  .profile-body input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+  }
+  
+  .invalid-input {
+    border-color: #ff4d4f;
+  }
+  
+  .error-message {
+    color: #ff4d4f;
+    font-size: 13px;
+    margin-bottom: 5px;
+    text-align: left;
+  }
+  
+  .profile-body button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    background-color: #341e79;
+    color: #fdd023;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+  }
+  
+  .profile-body button:hover:not(:disabled) {
+    background-color: #fdd023;
+    color: #341e79;
+  }
+  
+  .photo-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .change-photo-btn, .remove-photo-btn {
+    background-color: #4B0082; 
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.2s;
+  }
+  
+  .change-photo-btn:hover {
+    background-color: #6A0DAD;
+  }
+  
+  .remove-photo-btn {
+    background-color: #FF4C4C; 
+  }
+  
+  .remove-photo-btn:hover {
+    background-color: #FF0000;
+  }
+
+  .profile-dropdown-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+  }
+  
+  .top-right-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #341e79;
+  }
+  
+.password-input {
+  position: relative;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.password-input input {
+  width: 100%;
+  padding: 10px 40px 10px 10px; 
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+.password-input img {
+  position: absolute;
+  right: 10px; 
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  z-index: 2;
+}
+
+.password-input img:hover {
+  opacity: 0.7;
+}
+
+.error-message {
+  color: #ff4d4f;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.success-message {
+  color: #52c41a;
+  font-size: 14px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.profile-buttons button {
+  margin-right: 10px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.profile-buttons button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+  
+  

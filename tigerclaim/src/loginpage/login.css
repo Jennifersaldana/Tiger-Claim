@@ -1,0 +1,83 @@
+.login-fullscreen {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.background-image {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transform: scale(1.05);
+  z-index: 0;
+}
+
+.center-box {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card {
+  background: #fff;
+  padding: 35px;
+  border-radius: 16px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 6px 14px rgba(143, 20, 159, 0.2);
+}
+
+.login-card h1 {
+  color: var(--lsu-purple);
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 2rem;
+}
+
+.login-card p {
+  margin-bottom: 20px;
+  color: var(--lsu-purple);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.login-form input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid var(--lsu-purple);
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--lsu-gold);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: 0.2s;
+  box-sizing: border-box;
+}
+
+.login-btn:hover {
+  background-color: #e5be00;
+}
+
+.error {
+  color: var(--lsu-purple);
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+}

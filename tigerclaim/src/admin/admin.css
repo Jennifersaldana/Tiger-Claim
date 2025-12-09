@@ -1,0 +1,110 @@
+.admin-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.15);
+}
+
+.admin-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--lsu-purple);
+  border-bottom: 3px solid var(--lsu-gold);
+  padding-bottom: 8px;
+  margin-bottom: 25px;
+}
+
+.claim-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.claim-card {
+  border: 2px solid var(--lsu-purple);
+  background: #faf8ff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.claim-header {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--lsu-purple);
+  margin-bottom: 10px;
+}
+
+.description-box {
+  background: white;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--lsu-purple);
+  margin-bottom: 15px;
+}
+
+.admin-item-image {
+  width: 140px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+}
+
+.admin-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.approve-btn {
+  background: var(--lsu-gold);
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.deny-btn {
+  background: #d9534f;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  border: none;
+}
+
+.deny-box {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.deny-box textarea {
+  border: 2px solid var(--lsu-purple);
+  border-radius: 6px;
+  padding: 10px;
+  background: white;
+}
+
+.submit-deny-btn {
+  background: var(--lsu-gold);
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+}
+
+.resolved-badge {
+  margin-top: 10px;
+  background: #d6c8ff;
+  color: var(--lsu-purple);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: bold;
+  border: 1px solid var(--lsu-purple);
+}

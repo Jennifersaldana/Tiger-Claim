@@ -1,0 +1,48 @@
+.notif-dropdown {
+  position: absolute;
+  right: 0;
+  top: 55px;
+  width: 260px;
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  z-index: 999;
+}
+
+.notif-dropdown h3 {
+  margin: 0;
+  padding-bottom: 10px;
+  border-bottom: 3px solid var(--lsu-gold);
+  color: var(--lsu-purple);
+  font-size: 18px;
+}
+
+.notif-divider {
+  height: 10px;
+}
+
+.notif-empty {
+  text-align: center;
+  color: #777;
+  padding: 10px 0;
+}
+
+.notif-item {
+  background-color: var(--lsu-purple);
+  color: white;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.notif-item:hover {
+  opacity: 0.85;
+}
+
+.notif-item.seen {
+  background-color: #e8e8e8;
+  color: #555;
+}

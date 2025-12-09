@@ -1,38 +1,223 @@
-.App {
-  text-align: center;
+:root {
+  --lsu-purple: #461d7c;
+  --lsu-gold: #fdd023;
+  --lsu-gray: #f5f5f5;
+  --text-dark: #333;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  margin: 0;
+  background-color: var(--lsu-gray);
+  font-family: "Helvetica Neue", Arial, sans-serif;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.lsu-header {
+  background-color: var(--lsu-purple);
+  color: white;
+  padding: 12px 24px;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  justify-content: space-between;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lsu-logo {
+  width: 40px;
+  height: 40px;
+}
+
+.header-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.main-layout {
+  display: flex;
+  min-height: calc(100vh - 140px);
+}
+
+.sidebar {
+  width: 220px;
+  background-color: var(--lsu-purple);
+  color: white;
+  padding-top: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 14px 20px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.sidebar li:hover {
+  background-color: #fff6cc;
+  color: var(--text-dark);
+}
+
+.sidebar .active {
+  background-color: var(--lsu-gold);
+  color: var(--text-dark);
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px;
+}
+
+.footer {
+  text-align: center;
+  padding: 12px;
+  background-color: var(--lsu-purple);
+  color: white;
+  font-size: 0.9rem;
+}
+
+.top-right-icons {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.notification-icon {
+  position: relative;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.bell-icon {
+  font-size: 26px;
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.notif-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 12px;
+  height: 12px;
+  background: #d9534f;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(0,0,0,0.3);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.top-right-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  cursor: pointer;
+}
+
+.notif-dropdown {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  width: 260px;
+  background: white;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  border-radius: 8px;
+  padding: 12px;
+  z-index: 999;
+}
+
+.notif-dropdown h3 {
+  margin: 0 0 10px;
+  color: var(--lsu-purple);
+  border-bottom: 2px solid var(--lsu-gold);
+  padding-bottom: 6px;
+  font-size: 1.1rem;
+}
+
+.notif-empty {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+.notif-item {
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  background: #fdd02333;
+  cursor: pointer;
+}
+
+.notif-item.seen {
+  background: #eee;
+}
+
+.notif-item:hover {
+  background: #fdd02377;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-box {
+  background: white;
+  padding: 22px 28px;
+  border-radius: 12px;
+  width: 280px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+}
+
+.modal-box h3 {
+  margin-bottom: 12px;
+  color: var(--lsu-purple);
+  font-weight: bold;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px; 
+  margin-top: 10px;
+}
+
+.logout-btn-select {
+  width: 100px;
+  text-align: center;
+  padding: 10px 0;
+  border: 2px solid var(--lsu-purple);
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  background: #ddd !important;
+  color: var(--lsu-purple) !important;
+  transition: all 0.2s ease;
+}
+
+.logout-btn-select:hover {
+  background: var(--lsu-gold) !important;
+  color: black !important;
+}
+
+.logout-btn-select.selected {
+  background: var(--lsu-gold) !important;
+  color: black !important;
+  transform: scale(1.05);
 }
