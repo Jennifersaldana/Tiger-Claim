@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/Tiger-Claim/static/css/main.1cbfb214.css",
+    "main.js": "/Tiger-Claim/static/js/main.5468ba7a.js",
+    "static/js/453.6d288136.chunk.js": "/Tiger-Claim/static/js/453.6d288136.chunk.js",
+    "static/media/eyeclosed.png": "/Tiger-Claim/static/media/eyeclosed.4ac2118f18b8f6ae1cdb.png",
+    "static/media/eyeopen.png": "/Tiger-Claim/static/media/eyeopen.ec5156c8892b47c6507c.png",
+    "static/media/lsu-logo.svg": "/Tiger-Claim/static/media/lsu-logo.797e4afa6c3ec3f98dd84e27afc90892.svg",
+    "index.html": "/Tiger-Claim/index.html",
+    "main.1cbfb214.css.map": "/Tiger-Claim/static/css/main.1cbfb214.css.map",
+    "main.5468ba7a.js.map": "/Tiger-Claim/static/js/main.5468ba7a.js.map",
+    "453.6d288136.chunk.js.map": "/Tiger-Claim/static/js/453.6d288136.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1cbfb214.css",
+    "static/js/main.5468ba7a.js"
+  ]
+}
